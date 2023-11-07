@@ -10,9 +10,8 @@ using namespace std;
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_video.h"
 
-void menu(bool &choix, bool &musique)
+int main()
 {
-
     srand(time(NULL));
     // Initialisation
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
@@ -26,7 +25,7 @@ void menu(bool &choix, bool &musique)
 
     // Initialisation window
 
-    SDL_Window *win = SDL_CreateWindow("DINO RUNNER", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 700, 500, 0);
+    SDL_Window *win = SDL_CreateWindow("CHESS", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1000, 1000, 0);
     Uint32 render_flags = SDL_RENDERER_ACCELERATED;
     SDL_Renderer *rend = SDL_CreateRenderer(win, -1, render_flags);
 
@@ -34,15 +33,6 @@ void menu(bool &choix, bool &musique)
 
     int mouseX;
     int mouseY;
-
-    SDL_Color blanc = {255, 255, 255};
-    SDL_Color noir = {0, 0, 0};
-    TTF_Font *dogica = TTF_OpenFont("font/dogica.ttf", 16);
-    if (dogica == NULL)
-    {
-        fprintf(stderr, "Impossible de charger \"dogica.ttf\"");
-        exit(EXIT_FAILURE);
-    }
 
     SDL_Event event;
 
@@ -72,4 +62,5 @@ void menu(bool &choix, bool &musique)
     SDL_DestroyWindow(win);
 
     SDL_Quit();
+    return 0;
 }
