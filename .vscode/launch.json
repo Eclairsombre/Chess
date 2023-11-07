@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/alex/Bureau/Chess",
-      "program": "/home/alex/Bureau/Chess/build/Debug/outDebug",
+      "cwd": "/home/alex/Bureau/Chess/src",
+      "program": "/home/alex/Bureau/Chess/src/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

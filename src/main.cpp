@@ -9,6 +9,14 @@ using namespace std;
 #include <SDL2/SDL_mixer.h>
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_video.h"
+#include <vector>
+
+#include "grid.cpp"
+
+bool pointInRect(int x, int y, SDL_Rect rect)
+{
+    return x >= rect.x && x <= rect.x + rect.w && y >= rect.y && y <= rect.y + rect.h;
+}
 
 int main()
 {
@@ -34,7 +42,23 @@ int main()
     int mouseX;
     int mouseY;
 
-    SDL_Event event;
+    bool isDragging = false;
+
+    vector<SDL_Rect> pieces;
+
+    grid g;
+    int offsetX, offsetY, indiceDrag;
+
+    SDL_Event e;
+
+    for (int i = 0; i < 2; i++)
+    {
+        for (int y = 0; y < 8; y++)
+        {
+            SDL_Rect rect = {120 + y * 100, 120 + i * 100, 60, 60};
+            pieces.push_back(rect);
+        }
+    }
 
     while (!stop)
 
@@ -44,14 +68,53 @@ int main()
 
         SDL_RenderClear(rend);
 
-        while (SDL_PollEvent(&event))
+        g.showGrid(rend);
+        SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
+        for (int i = 0; i < pieces.size(); i++)
+        {
+            SDL_RenderFillRect(rend, &pieces[i]);
+        }
+
+        while (SDL_PollEvent(&e))
         {
 
-            switch (event.type)
+            if (e.type == SDL_QUIT)
             {
-            case SDL_QUIT:
-                // Quit
                 stop = true;
+            }
+            else if (e.type == SDL_MOUSEBUTTONDOWN)
+            {
+                if (e.button.button == SDL_BUTTON_LEFT)
+                {
+                    for (int i = 0; i < pieces.size(); i++)
+                    {
+                        if (e.button.x >= pieces[i].x && e.button.x <= pieces[i].x + pieces[i].w && e.button.y >= pieces[i].y && e.button.y <= pieces[i].y + pieces[i].h)
+                        {
+
+                            isDragging = true;
+                            indiceDrag = i;
+                            offsetX = e.button.x - pieces[i].x;
+                            offsetY = e.button.y - pieces[i].y;
+                        }
+                    }
+                }
+            }
+            else if (e.type == SDL_MOUSEBUTTONUP)
+            {
+                if (e.button.button == SDL_BUTTON_LEFT)
+                {
+                    isDragging = false;
+                }
+            }
+            else if (e.type == SDL_MOUSEMOTION)
+            {
+                if (isDragging)
+
+                {
+
+                    pieces[indiceDrag].x = e.motion.x - offsetX;
+                    pieces[indiceDrag].y = e.motion.y - offsetY;
+                }
             }
         }
 
