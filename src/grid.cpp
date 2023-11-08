@@ -11,25 +11,75 @@ grid::~grid()
 
 void grid::resetGrid()
 {
+    SDL_Color color;
     for (int i = 0; i < 8; i++)
     {
         for (int y = 0; y < 8; y++)
         {
 
-            if (y <= 1)
+            if (y == 1 || y == 6)
             {
+                if (y == 1)
+                {
+                    this->tabGrid[i][y].setDirection("Bas");
+                    SDL_Color color = {255, 255, 255};
+                    this->tabGrid[i][y].setColor(color);
+                }
+                else
+                {
+                    this->tabGrid[i][y].setDirection("Haut");
+                    SDL_Color color = {0, 0, 0};
+                    this->tabGrid[i][y].setColor(color);
+                }
 
                 SDL_Rect rect = {120 + i * 100, 120 + y * 100, 60, 60};
-                SDL_Color white = {255, 255, 255};
-                this->tabGrid[i][y].setColor(white);
+
+                this->tabGrid[i][y].setType(1);
+
                 this->tabGrid[i][y].setPieces(rect);
                 this->tabGrid[i][y].setEmpty(false);
             }
-            else if (y >= 6)
+            else if (y == 0 || y == 7)
             {
+                if (y == 0)
+                {
+                    this->tabGrid[i][y].setDirection("Bas");
+                    SDL_Color color = {255, 255, 255};
+                    this->tabGrid[i][y].setColor(color);
+                }
+                else
+                {
+                    this->tabGrid[i][y].setDirection("Haut");
+                    SDL_Color color = {0, 0, 0};
+                    this->tabGrid[i][y].setColor(color);
+                }
+
+                switch (i)
+                {
+                case 0:
+                case 7:
+                    this->tabGrid[i][y].setType(2);
+                    break;
+                case 1:
+                case 6:
+                    this->tabGrid[i][y].setType(3);
+                    break;
+                case 2:
+                case 5:
+                    this->tabGrid[i][y].setType(4);
+                    break;
+                case 3:
+                    this->tabGrid[i][y].setType(5);
+                    break;
+                case 4:
+                    this->tabGrid[i][y].setType(6);
+                    break;
+
+                default:
+                    break;
+                }
                 SDL_Rect rect = {120 + i * 100, 120 + y * 100, 60, 60};
-                SDL_Color black = {0, 0, 0};
-                this->tabGrid[i][y].setColor(black);
+
                 this->tabGrid[i][y].setPieces(rect);
                 this->tabGrid[i][y].setEmpty(false);
             }
@@ -92,6 +142,23 @@ void grid::showGrid(SDL_Renderer *rend)
     }
 }
 
+bool testMove(int x, int y, int a, int b, pieces p)
+{
+    if (p.getDirection() == (string) "Haut")
+    {
+        cout << 1 << endl;
+        switch (p.getType())
+        {
+        case 1:
+            return (b == y - 1);
+            break;
+
+        default:
+            break;
+        }
+    }
+}
+
 void grid::eventHolder(SDL_Event e, bool &quit)
 {
     while (SDL_PollEvent(&e))
@@ -128,14 +195,26 @@ void grid::eventHolder(SDL_Event e, bool &quit)
             {
                 this->isDragging = false;
                 SDL_Rect temp, rect = tabGrid[this->indiceDragX][this->indiceDragY].getPiece();
-                rect = {120 + ((rect.x / 100) - 1) * 100, 120 + ((rect.y / 100) - 1) * 100, 60, 60};
+                if (testMove(this->indiceDragX, this->indiceDragY, ((rect.x / 100) - 1), ((rect.y / 100) - 1), tabGrid[this->indiceDragX][this->indiceDragY]))
+                {
+                    rect = {120 + ((rect.x / 100) - 1) * 100, 120 + ((rect.y / 100) - 1) * 100, 60, 60};
 
-                this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(temp);
-                this->tabGrid[this->indiceDragX][this->indiceDragY].setEmpty(true);
+                    this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(temp);
+                    this->tabGrid[this->indiceDragX][this->indiceDragY].setEmpty(true);
 
-                this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setColor(this->tabGrid[this->indiceDragX][this->indiceDragY].getColor());
-                this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setPieces(rect);
-                this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setEmpty(false);
+                    this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setColor(this->tabGrid[this->indiceDragX][this->indiceDragY].getColor());
+                    this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setPieces(rect);
+                    this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setEmpty(false);
+                    this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setType(this->tabGrid[this->indiceDragX][this->indiceDragY].getType());
+                    this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setDirection(this->tabGrid[this->indiceDragX][this->indiceDragY].getDirection());
+
+                    this->tabGrid[this->indiceDragX][this->indiceDragY].setType(0);
+                }
+                else
+                {
+                    rect = {120 + this->indiceDragX * 100, 120 + this->indiceDragY * 100, 60, 60};
+                    this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(rect);
+                }
             }
         }
         else if (e.type == SDL_MOUSEMOTION)

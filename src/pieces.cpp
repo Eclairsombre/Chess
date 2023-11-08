@@ -37,3 +37,23 @@ SDL_Color pieces::getColor()
 {
     return this->color;
 }
+
+void pieces::setType(int i)
+{
+    this->typePiece = i;
+}
+
+int pieces::getType()
+{
+    return this->typePiece;
+}
+
+void pieces::setDirection(string s)
+{
+    this->direction = s;
+}
+
+string pieces::getDirection()
+{
+    return this->direction;
+}
