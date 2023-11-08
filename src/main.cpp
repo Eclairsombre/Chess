@@ -51,14 +51,7 @@ int main()
 
     SDL_Event e;
 
-    for (int i = 0; i < 2; i++)
-    {
-        for (int y = 0; y < 8; y++)
-        {
-            SDL_Rect rect = {120 + y * 100, 120 + i * 100, 60, 60};
-            pieces.push_back(rect);
-        }
-    }
+    g.resetGrid();
 
     while (!stop)
 
@@ -69,54 +62,8 @@ int main()
         SDL_RenderClear(rend);
 
         g.showGrid(rend);
-        SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
-        for (int i = 0; i < pieces.size(); i++)
-        {
-            SDL_RenderFillRect(rend, &pieces[i]);
-        }
 
-        while (SDL_PollEvent(&e))
-        {
-
-            if (e.type == SDL_QUIT)
-            {
-                stop = true;
-            }
-            else if (e.type == SDL_MOUSEBUTTONDOWN)
-            {
-                if (e.button.button == SDL_BUTTON_LEFT)
-                {
-                    for (int i = 0; i < pieces.size(); i++)
-                    {
-                        if (e.button.x >= pieces[i].x && e.button.x <= pieces[i].x + pieces[i].w && e.button.y >= pieces[i].y && e.button.y <= pieces[i].y + pieces[i].h)
-                        {
-
-                            isDragging = true;
-                            indiceDrag = i;
-                            offsetX = e.button.x - pieces[i].x;
-                            offsetY = e.button.y - pieces[i].y;
-                        }
-                    }
-                }
-            }
-            else if (e.type == SDL_MOUSEBUTTONUP)
-            {
-                if (e.button.button == SDL_BUTTON_LEFT)
-                {
-                    isDragging = false;
-                }
-            }
-            else if (e.type == SDL_MOUSEMOTION)
-            {
-                if (isDragging)
-
-                {
-
-                    pieces[indiceDrag].x = e.motion.x - offsetX;
-                    pieces[indiceDrag].y = e.motion.y - offsetY;
-                }
-            }
-        }
+        g.eventHolder(e, stop);
 
         SDL_RenderPresent(rend);
         SDL_Delay(1000 / 60);
