@@ -1,6 +1,8 @@
 #include "grid.h"
 #include <tuple>
 #include <vector>
+#include <iostream>
+using namespace std;
 
 grid::grid(/* args */)
 {
@@ -26,12 +28,14 @@ void grid::resetGrid()
                     this->tabGrid[i][y].setDirection("Bas");
                     SDL_Color color = {255, 255, 255};
                     this->tabGrid[i][y].setColor(color);
+                    this->tabGrid[i][y].setCamp("white");
                 }
                 else
                 {
                     this->tabGrid[i][y].setDirection("Haut");
                     SDL_Color color = {0, 0, 0};
                     this->tabGrid[i][y].setColor(color);
+                    this->tabGrid[i][y].setCamp("black");
                 }
 
                 SDL_Rect rect = {120 + i * 100, 120 + y * 100, 60, 60};
@@ -48,12 +52,14 @@ void grid::resetGrid()
                     this->tabGrid[i][y].setDirection("Bas");
                     SDL_Color color = {255, 255, 255};
                     this->tabGrid[i][y].setColor(color);
+                    this->tabGrid[i][y].setCamp("white");
                 }
                 else
                 {
                     this->tabGrid[i][y].setDirection("Haut");
                     SDL_Color color = {0, 0, 0};
                     this->tabGrid[i][y].setColor(color);
+                    this->tabGrid[i][y].setCamp("black");
                 }
 
                 switch (i)
@@ -158,6 +164,9 @@ void posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, i
 {
     vector<tuple<int, int>> temp;
     posibility = temp;
+    bool stop = false;
+    SDL_Color black = {0, 0, 0};
+    SDL_Color white = {255, 255, 255};
     switch (p.getType())
     {
     case 1:
@@ -185,14 +194,42 @@ void posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, i
             {
                 if (y - 1 >= 0 && !tab[x - 1][y - 1].getEmpty())
                 {
-                    posibility.push_back(make_tuple(x - 1, y - 1));
+
+                    if (tab[x][y].getCamp() == (string) "black")
+                    {
+
+                        if (tab[x - 1][y - 1].getCamp() == (string) "white")
+                        {
+                            posibility.push_back(make_tuple(x - 1, y - 1));
+                        }
+                    }
+                    else
+                    {
+                        if (tab[x - 1][y - 1].getCamp() == (string) "black")
+                        {
+                            posibility.push_back(make_tuple(x - 1, y - 1));
+                        }
+                    }
                 }
             }
             if (x <= 6)
             {
                 if (y - 1 >= 0 && !tab[x + 1][y - 1].getEmpty())
                 {
-                    posibility.push_back(make_tuple(x + 1, y - 1));
+                    if (tab[x][y].getCamp() == (string) "black")
+                    {
+                        if (tab[x + 1][y - 1].getCamp() == (string) "white")
+                        {
+                            posibility.push_back(make_tuple(x + 1, y - 1));
+                        }
+                    }
+                    else
+                    {
+                        if (tab[x + 1][y - 1].getCamp() == (string) "black")
+                        {
+                            posibility.push_back(make_tuple(x + 1, y - 1));
+                        }
+                    }
                 }
             }
         }
@@ -221,18 +258,182 @@ void posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, i
             {
                 if (y + 1 <= 7 && !tab[x - 1][y + 1].getEmpty())
                 {
-                    posibility.push_back(make_tuple(x - 1, y + 1));
+                    if (tab[x][y].getCamp() == (string) "black")
+                    {
+                        if (tab[x - 1][y + 1].getCamp() == (string) "white")
+                        {
+                            posibility.push_back(make_tuple(x - 1, y + 1));
+                        }
+                    }
+                    else
+                    {
+                        if (tab[x + 1][y + 1].getCamp() == (string) "black")
+                        {
+                            posibility.push_back(make_tuple(x + 1, y + 1));
+                        }
+                    }
                 }
-            }
-            if (x <= 6)
-            {
-                if (y + 1 <= 7 && !tab[x + 1][y + 1].getEmpty())
+                if (x <= 6)
                 {
-                    posibility.push_back(make_tuple(x + 1, y + 1));
+                    if (y + 1 <= 7 && !tab[x + 1][y + 1].getEmpty())
+                    {
+                        if (tab[x][y].getCamp() == (string) "black")
+                        {
+                            if (tab[x + 1][y + 1].getCamp() == (string) "white")
+                            {
+                                posibility.push_back(make_tuple(x + 1, y + 1));
+                            }
+                        }
+                        else
+                        {
+                            if (tab[x + 1][y + 1].getCamp() == (string) "black")
+                            {
+                                posibility.push_back(make_tuple(x + 1, y + 1));
+                            }
+                        }
+                    }
                 }
             }
         }
         break;
+    case 2:
+
+        for (int i = x + 1; i < 8; i++)
+        {
+
+            if (tab[i][y].getEmpty())
+            {
+
+                if (!stop)
+                {
+                    posibility.push_back(make_tuple(i, y));
+                }
+            }
+            else
+            {
+                if (!stop)
+                {
+                    if (tab[x][y].getCamp() == (string) "black")
+                    {
+                        if (tab[i][y].getCamp() == (string) "white")
+                        {
+                            posibility.push_back(make_tuple(i, y));
+                        }
+                    }
+                    else
+                    {
+                        if (tab[i][y].getCamp() == (string) "black")
+                        {
+                            posibility.push_back(make_tuple(i, y));
+                        }
+                    }
+                }
+                stop = true;
+            }
+        }
+        stop = false;
+
+        for (int i = x - 1; i >= 0; i--)
+        {
+            if (tab[i][y].getEmpty())
+            {
+
+                if (!stop)
+                {
+
+                    posibility.push_back(make_tuple(i, y));
+                }
+            }
+            else
+            {
+                if (!stop)
+                {
+                    if (tab[x][y].getCamp() == (string) "black")
+                    {
+                        if (tab[i][y].getCamp() == (string) "white")
+                        {
+                            posibility.push_back(make_tuple(i, y));
+                        }
+                    }
+                    else
+                    {
+                        if (tab[i][y].getCamp() == (string) "black")
+                        {
+                            posibility.push_back(make_tuple(i, y));
+                        }
+                    }
+                }
+                stop = true;
+            }
+        }
+        stop = false;
+
+        for (int i = y + 1; i < 8; i++)
+        {
+            if (tab[x][i].getEmpty())
+            {
+
+                if (!stop)
+                {
+                    posibility.push_back(make_tuple(x, i));
+                }
+            }
+            else
+            {
+                if (!stop)
+                {
+                    if (tab[x][y].getCamp() == (string) "black")
+                    {
+                        if (tab[x][i].getCamp() == (string) "white")
+                        {
+                            posibility.push_back(make_tuple(x, i));
+                        }
+                    }
+                    else
+                    {
+                        if (tab[x][i].getCamp() == (string) "black")
+                        {
+                            posibility.push_back(make_tuple(x, i));
+                        }
+                    }
+                }
+                stop = true;
+            }
+        }
+        stop = false;
+        for (int i = y - 1; i >= 0; i--)
+        {
+            if (tab[x][i].getEmpty())
+            {
+
+                if (!stop)
+                {
+
+                    posibility.push_back(make_tuple(x, i));
+                }
+            }
+            else
+            {
+                if (!stop)
+                {
+                    if (tab[x][y].getCamp() == (string) "black")
+                    {
+                        if (tab[x][i].getCamp() == (string) "white")
+                        {
+                            posibility.push_back(make_tuple(x, i));
+                        }
+                    }
+                    else
+                    {
+                        if (tab[x][i].getCamp() == (string) "black")
+                        {
+                            posibility.push_back(make_tuple(x, i));
+                        }
+                    }
+                }
+                stop = true;
+            }
+        }
 
     default:
         break;
@@ -296,8 +497,10 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                     this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setType(this->tabGrid[this->indiceDragX][this->indiceDragY].getType());
                     this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setDirection(this->tabGrid[this->indiceDragX][this->indiceDragY].getDirection());
                     this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setMove(true);
+                    this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setCamp(this->tabGrid[this->indiceDragX][this->indiceDragY].getCamp());
 
                     this->tabGrid[this->indiceDragX][this->indiceDragY].setType(0);
+                    this->tabGrid[this->indiceDragX][this->indiceDragY].setCamp("");
                 }
                 else
                 {

@@ -12,7 +12,7 @@ private:
     SDL_Rect rect;
     SDL_Color color;
     int typePiece = 0, x, y;
-    string direction;
+    string direction, camp;
 
     /*
     0=vide
@@ -39,6 +39,8 @@ public:
     string getDirection();
     bool getMove();
     void setMove(bool b);
+    void setCamp(string s);
+    string getCamp();
 };
 
 #endif

@@ -67,3 +67,13 @@ void pieces::setMove(bool b)
 {
     this->asMove = true;
 }
+
+void pieces::setCamp(string s)
+{
+    this->camp = s;
+}
+
+string pieces::getCamp()
+{
+    return this->camp;
+}
