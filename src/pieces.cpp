@@ -57,3 +57,13 @@ string pieces::getDirection()
 {
     return this->direction;
 }
+
+bool pieces::getMove()
+{
+    return this->asMove;
+}
+
+void pieces::setMove(bool b)
+{
+    this->asMove = true;
+}

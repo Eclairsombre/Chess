@@ -9,6 +9,7 @@ class grid
 private:
     SDL_Rect square;
     pieces tabGrid[10][10];
+    vector<tuple<int, int>> posibility;
     bool whiteRound = true;
     bool isDragging = false;
     int offsetX, offsetY, indiceDragX, indiceDragY;

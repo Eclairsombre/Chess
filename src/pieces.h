@@ -8,7 +8,7 @@ using namespace std;
 class pieces
 {
 private:
-    bool empty = false;
+    bool empty = false, asMove = false;
     SDL_Rect rect;
     SDL_Color color;
     int typePiece = 0, x, y;
@@ -37,6 +37,8 @@ public:
     int getType();
     void setDirection(string s);
     string getDirection();
+    bool getMove();
+    void setMove(bool b);
 };
 
 #endif

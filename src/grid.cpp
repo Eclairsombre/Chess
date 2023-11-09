@@ -1,4 +1,6 @@
 #include "grid.h"
+#include <tuple>
+#include <vector>
 
 grid::grid(/* args */)
 {
@@ -141,21 +143,99 @@ void grid::showGrid(SDL_Renderer *rend)
         }
     }
 }
-
-bool testMove(int x, int y, int a, int b, pieces p)
+bool CoordonneinTuple(int x, int y, vector<tuple<int, int>> &posibility)
 {
-    if (p.getDirection() == (string) "Haut")
+    for (int i = 0; i < posibility.size(); i++)
     {
-        cout << 1 << endl;
-        switch (p.getType())
+        if (get<0>(posibility[i]) == x && get<1>(posibility[i]) == y)
         {
-        case 1:
-            return (b == y - 1);
-            break;
-
-        default:
-            break;
+            return true;
         }
+    }
+    return false;
+}
+void posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility)
+{
+    vector<tuple<int, int>> temp;
+    posibility = temp;
+    switch (p.getType())
+    {
+    case 1:
+        if (p.getDirection() == (string) "Haut")
+        {
+            if (p.getMove())
+            {
+                if (y - 1 >= 0 && tab[x][y - 1].getEmpty())
+                {
+                    posibility.push_back(make_tuple(x, y - 1));
+                }
+            }
+            else
+            {
+                if (tab[x][y - 2].getEmpty())
+                {
+                    posibility.push_back(make_tuple(x, y - 2));
+                }
+                if (tab[x][y - 1].getEmpty())
+                {
+                    posibility.push_back(make_tuple(x, y - 1));
+                }
+            }
+            if (x >= 1)
+            {
+                if (y - 1 >= 0 && !tab[x - 1][y - 1].getEmpty())
+                {
+                    posibility.push_back(make_tuple(x - 1, y - 1));
+                }
+            }
+            if (x <= 6)
+            {
+                if (y - 1 >= 0 && !tab[x + 1][y - 1].getEmpty())
+                {
+                    posibility.push_back(make_tuple(x + 1, y - 1));
+                }
+            }
+        }
+
+        else
+        {
+            if (p.getMove())
+            {
+                if (y + 1 <= 7 && tab[x][y + 1].getEmpty())
+                {
+                    posibility.push_back(make_tuple(x, y + 1));
+                }
+            }
+            else
+            {
+                if (tab[x][y + 2].getEmpty())
+                {
+                    posibility.push_back(make_tuple(x, y + 1));
+                }
+                if (tab[x][y + 1].getEmpty())
+                {
+                    posibility.push_back(make_tuple(x, y + 2));
+                }
+            }
+            if (x >= 1)
+            {
+                if (y + 1 <= 7 && !tab[x - 1][y + 1].getEmpty())
+                {
+                    posibility.push_back(make_tuple(x - 1, y + 1));
+                }
+            }
+            if (x <= 6)
+            {
+                if (y + 1 <= 7 && !tab[x + 1][y + 1].getEmpty())
+                {
+                    posibility.push_back(make_tuple(x + 1, y + 1));
+                }
+            }
+        }
+        break;
+
+    default:
+        break;
     }
 }
 
@@ -180,8 +260,15 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                         {
 
                             this->isDragging = true;
+
                             indiceDragX = i;
                             indiceDragY = y;
+                            posibleMove(i, y, this->tabGrid[i][y], this->tabGrid, posibility);
+                            cout << "Move : " << endl;
+                            for (int i = 0; i < posibility.size(); i++)
+                            {
+                                cout << get<0>(posibility[i]) << " " << get<1>(posibility[i]) << endl;
+                            }
                             this->offsetX = e.button.x - this->tabGrid[i][y].getPiece().x;
                             this->offsetY = e.button.y - this->tabGrid[i][y].getPiece().y;
                         }
@@ -195,8 +282,9 @@ void grid::eventHolder(SDL_Event e, bool &quit)
             {
                 this->isDragging = false;
                 SDL_Rect temp, rect = tabGrid[this->indiceDragX][this->indiceDragY].getPiece();
-                if (testMove(this->indiceDragX, this->indiceDragY, ((rect.x / 100) - 1), ((rect.y / 100) - 1), tabGrid[this->indiceDragX][this->indiceDragY]))
+                if (CoordonneinTuple(rect.x / 100 - 1, rect.y / 100 - 1, this->posibility))
                 {
+
                     rect = {120 + ((rect.x / 100) - 1) * 100, 120 + ((rect.y / 100) - 1) * 100, 60, 60};
 
                     this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(temp);
@@ -207,6 +295,7 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                     this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setEmpty(false);
                     this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setType(this->tabGrid[this->indiceDragX][this->indiceDragY].getType());
                     this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setDirection(this->tabGrid[this->indiceDragX][this->indiceDragY].getDirection());
+                    this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setMove(true);
 
                     this->tabGrid[this->indiceDragX][this->indiceDragY].setType(0);
                 }
