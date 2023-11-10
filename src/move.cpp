@@ -643,3 +643,9 @@ void moveFou(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>>
         }
     }
 }
+
+void moveDame(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility)
+{
+    moveTour(x, y, p, tab, posibility);
+    moveFou(x, y, p, tab, posibility);
+}

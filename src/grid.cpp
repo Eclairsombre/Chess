@@ -180,6 +180,8 @@ void posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, i
         break;
     case 4:
         moveFou(x, y, p, tab, posibility);
+    case 5:
+        moveDame(x, y, p, tab, posibility);
     default:
         break;
     }
