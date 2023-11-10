@@ -649,3 +649,71 @@ void moveDame(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
     moveTour(x, y, p, tab, posibility);
     moveFou(x, y, p, tab, posibility);
 }
+
+void moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility)
+{
+    if (x + 1 <= 7)
+    {
+        if (y + 1 <= 7)
+        {
+            if (tab[x + 1][y + 1].getEmpty())
+            {
+
+                posibility.push_back(make_tuple(x + 1, y + 1));
+            }
+        }
+        if (y - 1 >= 0)
+        {
+            if (tab[x + 1][y - 1].getEmpty())
+            {
+
+                posibility.push_back(make_tuple(x + 1, y - 1));
+            }
+        }
+        if (tab[x + 1][y].getEmpty())
+        {
+
+            posibility.push_back(make_tuple(x + 1, y));
+        }
+    }
+    if (x - 1 >= 0)
+    {
+        if (y + 1 <= 7)
+        {
+            if (tab[x - 1][y + 1].getEmpty())
+            {
+
+                posibility.push_back(make_tuple(x - 1, y + 1));
+            }
+        }
+        if (y - 1 >= 0)
+        {
+            if (tab[x - 1][y - 1].getEmpty())
+            {
+
+                posibility.push_back(make_tuple(x - 1, y - 1));
+            }
+        }
+        if (tab[x + 1][y].getEmpty())
+        {
+
+            posibility.push_back(make_tuple(x - 1, y));
+        }
+    }
+    if (y - 1 >= 0)
+    {
+        if (tab[x][y - 1].getEmpty())
+        {
+
+            posibility.push_back(make_tuple(x, y - 1));
+        }
+    }
+    if (y + 1 <= 7)
+    {
+        if (tab[x][y + 1].getEmpty())
+        {
+
+            posibility.push_back(make_tuple(x, y + 1));
+        }
+    }
+}
