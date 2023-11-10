@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 using namespace std;
+#include "move.cpp"
 
 grid::grid(/* args */)
 {
@@ -164,277 +165,21 @@ void posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, i
 {
     vector<tuple<int, int>> temp;
     posibility = temp;
-    bool stop = false;
-    SDL_Color black = {0, 0, 0};
-    SDL_Color white = {255, 255, 255};
+
     switch (p.getType())
     {
     case 1:
-        if (p.getDirection() == (string) "Haut")
-        {
-            if (p.getMove())
-            {
-                if (y - 1 >= 0 && tab[x][y - 1].getEmpty())
-                {
-                    posibility.push_back(make_tuple(x, y - 1));
-                }
-            }
-            else
-            {
-                if (tab[x][y - 2].getEmpty())
-                {
-                    posibility.push_back(make_tuple(x, y - 2));
-                }
-                if (tab[x][y - 1].getEmpty())
-                {
-                    posibility.push_back(make_tuple(x, y - 1));
-                }
-            }
-            if (x >= 1)
-            {
-                if (y - 1 >= 0 && !tab[x - 1][y - 1].getEmpty())
-                {
+        movePion(x, y, p, tab, posibility);
 
-                    if (tab[x][y].getCamp() == (string) "black")
-                    {
-
-                        if (tab[x - 1][y - 1].getCamp() == (string) "white")
-                        {
-                            posibility.push_back(make_tuple(x - 1, y - 1));
-                        }
-                    }
-                    else
-                    {
-                        if (tab[x - 1][y - 1].getCamp() == (string) "black")
-                        {
-                            posibility.push_back(make_tuple(x - 1, y - 1));
-                        }
-                    }
-                }
-            }
-            if (x <= 6)
-            {
-                if (y - 1 >= 0 && !tab[x + 1][y - 1].getEmpty())
-                {
-                    if (tab[x][y].getCamp() == (string) "black")
-                    {
-                        if (tab[x + 1][y - 1].getCamp() == (string) "white")
-                        {
-                            posibility.push_back(make_tuple(x + 1, y - 1));
-                        }
-                    }
-                    else
-                    {
-                        if (tab[x + 1][y - 1].getCamp() == (string) "black")
-                        {
-                            posibility.push_back(make_tuple(x + 1, y - 1));
-                        }
-                    }
-                }
-            }
-        }
-
-        else
-        {
-            if (p.getMove())
-            {
-                if (y + 1 <= 7 && tab[x][y + 1].getEmpty())
-                {
-                    posibility.push_back(make_tuple(x, y + 1));
-                }
-            }
-            else
-            {
-                if (tab[x][y + 2].getEmpty())
-                {
-                    posibility.push_back(make_tuple(x, y + 1));
-                }
-                if (tab[x][y + 1].getEmpty())
-                {
-                    posibility.push_back(make_tuple(x, y + 2));
-                }
-            }
-            if (x >= 1)
-            {
-                if (y + 1 <= 7 && !tab[x - 1][y + 1].getEmpty())
-                {
-                    if (tab[x][y].getCamp() == (string) "black")
-                    {
-                        if (tab[x - 1][y + 1].getCamp() == (string) "white")
-                        {
-                            posibility.push_back(make_tuple(x - 1, y + 1));
-                        }
-                    }
-                    else
-                    {
-                        if (tab[x + 1][y + 1].getCamp() == (string) "black")
-                        {
-                            posibility.push_back(make_tuple(x + 1, y + 1));
-                        }
-                    }
-                }
-                if (x <= 6)
-                {
-                    if (y + 1 <= 7 && !tab[x + 1][y + 1].getEmpty())
-                    {
-                        if (tab[x][y].getCamp() == (string) "black")
-                        {
-                            if (tab[x + 1][y + 1].getCamp() == (string) "white")
-                            {
-                                posibility.push_back(make_tuple(x + 1, y + 1));
-                            }
-                        }
-                        else
-                        {
-                            if (tab[x + 1][y + 1].getCamp() == (string) "black")
-                            {
-                                posibility.push_back(make_tuple(x + 1, y + 1));
-                            }
-                        }
-                    }
-                }
-            }
-        }
         break;
     case 2:
+        moveTour(x, y, p, tab, posibility);
 
-        for (int i = x + 1; i < 8; i++)
-        {
-
-            if (tab[i][y].getEmpty())
-            {
-
-                if (!stop)
-                {
-                    posibility.push_back(make_tuple(i, y));
-                }
-            }
-            else
-            {
-                if (!stop)
-                {
-                    if (tab[x][y].getCamp() == (string) "black")
-                    {
-                        if (tab[i][y].getCamp() == (string) "white")
-                        {
-                            posibility.push_back(make_tuple(i, y));
-                        }
-                    }
-                    else
-                    {
-                        if (tab[i][y].getCamp() == (string) "black")
-                        {
-                            posibility.push_back(make_tuple(i, y));
-                        }
-                    }
-                }
-                stop = true;
-            }
-        }
-        stop = false;
-
-        for (int i = x - 1; i >= 0; i--)
-        {
-            if (tab[i][y].getEmpty())
-            {
-
-                if (!stop)
-                {
-
-                    posibility.push_back(make_tuple(i, y));
-                }
-            }
-            else
-            {
-                if (!stop)
-                {
-                    if (tab[x][y].getCamp() == (string) "black")
-                    {
-                        if (tab[i][y].getCamp() == (string) "white")
-                        {
-                            posibility.push_back(make_tuple(i, y));
-                        }
-                    }
-                    else
-                    {
-                        if (tab[i][y].getCamp() == (string) "black")
-                        {
-                            posibility.push_back(make_tuple(i, y));
-                        }
-                    }
-                }
-                stop = true;
-            }
-        }
-        stop = false;
-
-        for (int i = y + 1; i < 8; i++)
-        {
-            if (tab[x][i].getEmpty())
-            {
-
-                if (!stop)
-                {
-                    posibility.push_back(make_tuple(x, i));
-                }
-            }
-            else
-            {
-                if (!stop)
-                {
-                    if (tab[x][y].getCamp() == (string) "black")
-                    {
-                        if (tab[x][i].getCamp() == (string) "white")
-                        {
-                            posibility.push_back(make_tuple(x, i));
-                        }
-                    }
-                    else
-                    {
-                        if (tab[x][i].getCamp() == (string) "black")
-                        {
-                            posibility.push_back(make_tuple(x, i));
-                        }
-                    }
-                }
-                stop = true;
-            }
-        }
-        stop = false;
-        for (int i = y - 1; i >= 0; i--)
-        {
-            if (tab[x][i].getEmpty())
-            {
-
-                if (!stop)
-                {
-
-                    posibility.push_back(make_tuple(x, i));
-                }
-            }
-            else
-            {
-                if (!stop)
-                {
-                    if (tab[x][y].getCamp() == (string) "black")
-                    {
-                        if (tab[x][i].getCamp() == (string) "white")
-                        {
-                            posibility.push_back(make_tuple(x, i));
-                        }
-                    }
-                    else
-                    {
-                        if (tab[x][i].getCamp() == (string) "black")
-                        {
-                            posibility.push_back(make_tuple(x, i));
-                        }
-                    }
-                }
-                stop = true;
-            }
-        }
-
+    case 3:
+        moveCavalier(x, y, p, tab, posibility);
+        break;
+    case 4:
+        moveFou(x, y, p, tab, posibility);
     default:
         break;
     }
