@@ -59,6 +59,8 @@
   "files.associations": {
     "iostream": "cpp",
     "numbers": "cpp",
-    "tuple": "cpp"
-  }
+    "tuple": "cpp",
+    "random": "cpp"
+  },
+  "discord.enabled": true
 }

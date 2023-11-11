@@ -4,6 +4,8 @@
 #include <iostream>
 using namespace std;
 
+void posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility);
+
 void movePion(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility)
 {
     if (p.getDirection() == (string) "Haut")
@@ -28,42 +30,52 @@ void movePion(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
         }
         if (x >= 1)
         {
-            if (y - 1 >= 0 && !tab[x - 1][y - 1].getEmpty())
+            if (y - 1 >= 0)
             {
-
-                if (tab[x][y].getCamp() == (string) "black")
+                if (!tab[x - 1][y - 1].getEmpty())
                 {
 
-                    if (tab[x - 1][y - 1].getCamp() == (string) "white")
                     {
-                        posibility.push_back(make_tuple(x - 1, y - 1));
-                    }
-                }
-                else
-                {
-                    if (tab[x - 1][y - 1].getCamp() == (string) "black")
-                    {
-                        posibility.push_back(make_tuple(x - 1, y - 1));
+                        if (tab[x][y].getCamp() == (string) "black")
+                        {
+
+                            if (tab[x - 1][y - 1].getCamp() == (string) "white")
+                            {
+                                posibility.push_back(make_tuple(x - 1, y - 1));
+                            }
+                        }
+                        else
+                        {
+                            if (tab[x - 1][y - 1].getCamp() == (string) "black")
+                            {
+                                posibility.push_back(make_tuple(x - 1, y - 1));
+                            }
+                        }
                     }
                 }
             }
         }
         if (x <= 6)
         {
-            if (y - 1 >= 0 && !tab[x + 1][y - 1].getEmpty())
+            if (y - 1 >= 0)
             {
-                if (tab[x][y].getCamp() == (string) "black")
+                if (!tab[x + 1][y - 1].getEmpty())
                 {
-                    if (tab[x + 1][y - 1].getCamp() == (string) "white")
                     {
-                        posibility.push_back(make_tuple(x + 1, y - 1));
-                    }
-                }
-                else
-                {
-                    if (tab[x + 1][y - 1].getCamp() == (string) "black")
-                    {
-                        posibility.push_back(make_tuple(x + 1, y - 1));
+                        if (tab[x][y].getCamp() == (string) "black")
+                        {
+                            if (tab[x + 1][y - 1].getCamp() == (string) "white")
+                            {
+                                posibility.push_back(make_tuple(x + 1, y - 1));
+                            }
+                        }
+                        else
+                        {
+                            if (tab[x + 1][y - 1].getCamp() == (string) "black")
+                            {
+                                posibility.push_back(make_tuple(x + 1, y - 1));
+                            }
+                        }
                     }
                 }
             }
@@ -650,13 +662,82 @@ void moveDame(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
     moveFou(x, y, p, tab, posibility);
 }
 
+bool CoordonneinTuple(int x, int y, vector<tuple<int, int>> &posibility)
+{
+    for (int i = 0; i < posibility.size(); i++)
+    {
+        if (get<0>(posibility[i]) == x && get<1>(posibility[i]) == y)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool checkCaseMate(const int x, const int z, pieces p, pieces tab[10][10], string camp, int &a, int &b)
+{
+    vector<tuple<int, int>> otherPieceDeplacement;
+    for (int i = 0; i < 8; i++)
+    {
+        for (int y = 0; y < 8; y++)
+        {
+            if (camp == "white")
+            {
+                if (tab[i][y].getCamp() == "black" && tab[i][y].getType() != 6)
+                {
+
+                    posibleMove(i, y, tab[i][y], tab, otherPieceDeplacement);
+                    if (CoordonneinTuple(x, z, otherPieceDeplacement))
+                    {
+                        cout << "Mate" << endl;
+                        a = i;
+                        b = y;
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                if (tab[i][y].getCamp() == "white" && tab[i][y].getType() != 6)
+                {
+                    posibleMove(i, y, tab[i][y], tab, otherPieceDeplacement);
+                    if (CoordonneinTuple(x, z, otherPieceDeplacement))
+                    {
+                        a = i;
+                        b = y;
+                        cout << "Mate" << endl;
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
+
+bool checkStopMate(pieces p, pieces tab[10][10], string camp, int a, int b)
+{
+    vector<tuple<int, int>> caseMate, temp;
+    posibleMove(a, b, tab[a][b], tab, caseMate);
+    for (int i = 0; i < 8; i++)
+    {
+        for (int y = 0; y < 8; y++)
+        {
+            if (camp == "white")
+            {
+            }
+        }
+    }
+}
+
 void moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility)
 {
+    int a, b;
     if (x + 1 <= 7)
     {
         if (y + 1 <= 7)
         {
-            if (tab[x + 1][y + 1].getEmpty())
+            if (tab[x + 1][y + 1].getEmpty() && !checkCaseMate(x + 1, y + 1, p, tab, tab[x][y].getCamp(), a, b))
             {
 
                 posibility.push_back(make_tuple(x + 1, y + 1));
@@ -664,13 +745,13 @@ void moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>>
         }
         if (y - 1 >= 0)
         {
-            if (tab[x + 1][y - 1].getEmpty())
+            if (tab[x + 1][y - 1].getEmpty() && !checkCaseMate(x + 1, y - 1, p, tab, tab[x][y].getCamp(), a, b))
             {
 
                 posibility.push_back(make_tuple(x + 1, y - 1));
             }
         }
-        if (tab[x + 1][y].getEmpty())
+        if (tab[x + 1][y].getEmpty() && !checkCaseMate(x + 1, y, p, tab, tab[x][y].getCamp(), a, b))
         {
 
             posibility.push_back(make_tuple(x + 1, y));
@@ -680,7 +761,7 @@ void moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>>
     {
         if (y + 1 <= 7)
         {
-            if (tab[x - 1][y + 1].getEmpty())
+            if (tab[x - 1][y + 1].getEmpty() && !checkCaseMate(x - 1, y + 1, p, tab, tab[x][y].getCamp(), a, b))
             {
 
                 posibility.push_back(make_tuple(x - 1, y + 1));
@@ -688,13 +769,13 @@ void moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>>
         }
         if (y - 1 >= 0)
         {
-            if (tab[x - 1][y - 1].getEmpty())
+            if (tab[x - 1][y - 1].getEmpty() && !checkCaseMate(x - 1, y - 1, p, tab, tab[x][y].getCamp(), a, b))
             {
 
                 posibility.push_back(make_tuple(x - 1, y - 1));
             }
         }
-        if (tab[x + 1][y].getEmpty())
+        if (tab[x - 1][y].getEmpty() && !checkCaseMate(x + 1, y, p, tab, tab[x][y].getCamp(), a, b))
         {
 
             posibility.push_back(make_tuple(x - 1, y));
@@ -702,7 +783,7 @@ void moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>>
     }
     if (y - 1 >= 0)
     {
-        if (tab[x][y - 1].getEmpty())
+        if (tab[x][y - 1].getEmpty() && !checkCaseMate(x, y + -1, p, tab, tab[x][y].getCamp(), a, b))
         {
 
             posibility.push_back(make_tuple(x, y - 1));
@@ -710,10 +791,46 @@ void moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>>
     }
     if (y + 1 <= 7)
     {
-        if (tab[x][y + 1].getEmpty())
+        if (tab[x][y + 1].getEmpty() && !checkCaseMate(x, y + 1, p, tab, tab[x][y].getCamp(), a, b))
         {
 
             posibility.push_back(make_tuple(x, y + 1));
         }
+    }
+    if (checkCaseMate(x, y, p, tab, tab[x][y].getCamp(), a, b) && posibility.size() == 0)
+    {
+    }
+}
+
+void posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility)
+{
+    vector<tuple<int, int>> temp;
+    posibility = temp;
+
+    switch (p.getType())
+    {
+    case 1:
+        movePion(x, y, p, tab, posibility);
+
+        break;
+    case 2:
+        moveTour(x, y, p, tab, posibility);
+        break;
+    case 3:
+        moveCavalier(x, y, p, tab, posibility);
+        break;
+    case 4:
+        moveFou(x, y, p, tab, posibility);
+        break;
+
+    case 5:
+        moveDame(x, y, p, tab, posibility);
+        break;
+    case 6:
+        moveRoi(x, y, p, tab, posibility);
+        break;
+
+    default:
+        break;
     }
 }

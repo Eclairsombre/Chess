@@ -17,6 +17,8 @@ grid::~grid()
 void grid::resetGrid()
 {
     SDL_Color color;
+    int chooseCamp = rand() % 2;
+    cout << chooseCamp << endl;
     for (int i = 0; i < 8; i++)
     {
         for (int y = 0; y < 8; y++)
@@ -27,16 +29,42 @@ void grid::resetGrid()
                 if (y == 1)
                 {
                     this->tabGrid[i][y].setDirection("Bas");
-                    SDL_Color color = {255, 255, 255};
-                    this->tabGrid[i][y].setColor(color);
-                    this->tabGrid[i][y].setCamp("white");
+                    switch (chooseCamp)
+                    {
+                    case 0:
+                        color = {255, 255, 255};
+                        this->tabGrid[i][y].setColor(color);
+                        this->tabGrid[i][y].setCamp("white");
+                        playerTwoCamp = "white";
+                        break;
+                    case 1:
+                        color = {0, 0, 0};
+                        this->tabGrid[i][y].setColor(color);
+                        this->tabGrid[i][y].setCamp("black");
+                        playerTwoCamp = "black";
+                    default:
+                        break;
+                    }
                 }
                 else
                 {
                     this->tabGrid[i][y].setDirection("Haut");
-                    SDL_Color color = {0, 0, 0};
-                    this->tabGrid[i][y].setColor(color);
-                    this->tabGrid[i][y].setCamp("black");
+                    switch (chooseCamp)
+                    {
+                    case 1:
+                        color = {255, 255, 255};
+                        this->tabGrid[i][y].setColor(color);
+                        this->tabGrid[i][y].setCamp("white");
+                        playerOneCamp = "white";
+                        break;
+                    case 0:
+                        color = {0, 0, 0};
+                        this->tabGrid[i][y].setColor(color);
+                        this->tabGrid[i][y].setCamp("black");
+                        playerOneCamp = "black";
+                    default:
+                        break;
+                    }
                 }
 
                 SDL_Rect rect = {120 + i * 100, 120 + y * 100, 60, 60};
@@ -51,16 +79,40 @@ void grid::resetGrid()
                 if (y == 0)
                 {
                     this->tabGrid[i][y].setDirection("Bas");
-                    SDL_Color color = {255, 255, 255};
-                    this->tabGrid[i][y].setColor(color);
-                    this->tabGrid[i][y].setCamp("white");
+
+                    switch (chooseCamp)
+                    {
+                    case 0:
+                        color = {255, 255, 255};
+                        this->tabGrid[i][y].setColor(color);
+                        this->tabGrid[i][y].setCamp("white");
+                        break;
+                    case 1:
+                        color = {0, 0, 0};
+                        this->tabGrid[i][y].setColor(color);
+                        this->tabGrid[i][y].setCamp("black");
+                    default:
+                        break;
+                    }
                 }
                 else
                 {
                     this->tabGrid[i][y].setDirection("Haut");
-                    SDL_Color color = {0, 0, 0};
-                    this->tabGrid[i][y].setColor(color);
-                    this->tabGrid[i][y].setCamp("black");
+
+                    switch (chooseCamp)
+                    {
+                    case 1:
+                        color = {255, 255, 255};
+                        this->tabGrid[i][y].setColor(color);
+                        this->tabGrid[i][y].setCamp("white");
+                        break;
+                    case 0:
+                        color = {0, 0, 0};
+                        this->tabGrid[i][y].setColor(color);
+                        this->tabGrid[i][y].setCamp("black");
+                    default:
+                        break;
+                    }
                 }
 
                 switch (i)
@@ -82,6 +134,14 @@ void grid::resetGrid()
                     break;
                 case 4:
                     this->tabGrid[i][y].setType(6);
+                    if (tabGrid[i][y].getCamp() == "black")
+                    {
+                        this->posRoiBlack = make_tuple(i, y);
+                    }
+                    else
+                    {
+                        this->posRoiWhite = make_tuple(i, y);
+                    }
                     break;
 
                 default:
@@ -150,42 +210,6 @@ void grid::showGrid(SDL_Renderer *rend)
         }
     }
 }
-bool CoordonneinTuple(int x, int y, vector<tuple<int, int>> &posibility)
-{
-    for (int i = 0; i < posibility.size(); i++)
-    {
-        if (get<0>(posibility[i]) == x && get<1>(posibility[i]) == y)
-        {
-            return true;
-        }
-    }
-    return false;
-}
-void posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility)
-{
-    vector<tuple<int, int>> temp;
-    posibility = temp;
-
-    switch (p.getType())
-    {
-    case 1:
-        movePion(x, y, p, tab, posibility);
-
-        break;
-    case 2:
-        moveTour(x, y, p, tab, posibility);
-
-    case 3:
-        moveCavalier(x, y, p, tab, posibility);
-        break;
-    case 4:
-        moveFou(x, y, p, tab, posibility);
-    case 5:
-        moveDame(x, y, p, tab, posibility);
-    default:
-        break;
-    }
-}
 
 void grid::eventHolder(SDL_Event e, bool &quit)
 {
@@ -206,19 +230,23 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                     {
                         if (e.button.x >= this->tabGrid[i][y].getPiece().x && e.button.x <= this->tabGrid[i][y].getPiece().x + this->tabGrid[i][y].getPiece().w && e.button.y >= this->tabGrid[i][y].getPiece().y && e.button.y <= this->tabGrid[i][y].getPiece().y + this->tabGrid[i][y].getPiece().h)
                         {
+                            if ((this->turn == "black" && this->tabGrid[i][y].getCamp() == "black") || (this->turn == "white" && this->tabGrid[i][y].getCamp() == "white"))
 
-                            this->isDragging = true;
-
-                            indiceDragX = i;
-                            indiceDragY = y;
-                            posibleMove(i, y, this->tabGrid[i][y], this->tabGrid, posibility);
-                            cout << "Move : " << endl;
-                            for (int i = 0; i < posibility.size(); i++)
                             {
-                                cout << get<0>(posibility[i]) << " " << get<1>(posibility[i]) << endl;
+
+                                this->isDragging = true;
+
+                                indiceDragX = i;
+                                indiceDragY = y;
+                                posibleMove(i, y, this->tabGrid[i][y], this->tabGrid, posibility);
+                                cout << "Move : " << endl;
+                                for (int i = 0; i < posibility.size(); i++)
+                                {
+                                    cout << get<0>(posibility[i]) << " " << get<1>(posibility[i]) << endl;
+                                }
+                                this->offsetX = e.button.x - this->tabGrid[i][y].getPiece().x;
+                                this->offsetY = e.button.y - this->tabGrid[i][y].getPiece().y;
                             }
-                            this->offsetX = e.button.x - this->tabGrid[i][y].getPiece().x;
-                            this->offsetY = e.button.y - this->tabGrid[i][y].getPiece().y;
                         }
                     }
                 }
@@ -232,6 +260,14 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                 SDL_Rect temp, rect = tabGrid[this->indiceDragX][this->indiceDragY].getPiece();
                 if (CoordonneinTuple(rect.x / 100 - 1, rect.y / 100 - 1, this->posibility))
                 {
+                    if (this->turn == "black")
+                    {
+                        this->turn = "white";
+                    }
+                    else
+                    {
+                        this->turn = "black";
+                    }
 
                     rect = {120 + ((rect.x / 100) - 1) * 100, 120 + ((rect.y / 100) - 1) * 100, 60, 60};
 
