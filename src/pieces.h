@@ -9,7 +9,7 @@ class pieces
 {
 private:
     bool empty = false, asMove = false;
-    SDL_Rect rect;
+    SDL_Rect rect, clip;
     SDL_Color color;
     int typePiece = 0, x, y;
     string direction, camp;
@@ -41,6 +41,9 @@ public:
     void setMove(bool b);
     void setCamp(string s);
     string getCamp();
+    void set_clips();
+    SDL_Rect getClip();
+    void ClipChanger(SDL_Rect r);
 };
 
 #endif

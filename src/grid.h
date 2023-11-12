@@ -11,7 +11,7 @@ private:
     SDL_Rect square;
     pieces tabGrid[10][10];
     vector<tuple<int, int>> posibility;
-
+    SDL_Texture *image;
     bool isDragging = false;
     int offsetX, offsetY, indiceDragX, indiceDragY;
     bool checkmate = false;
@@ -20,7 +20,7 @@ private:
     tuple<int, int> posRoiWhite = {}, posRoiBlack = {};
 
 public:
-    grid(/* args */);
+    grid(SDL_Renderer *rend);
     ~grid();
 
     void showGrid(SDL_Renderer *rend);

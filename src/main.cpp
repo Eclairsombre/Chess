@@ -46,7 +46,7 @@ int main()
 
     vector<SDL_Rect> pieces;
 
-    grid g;
+    grid g(rend);
     int offsetX, offsetY, indiceDrag;
 
     SDL_Event e;

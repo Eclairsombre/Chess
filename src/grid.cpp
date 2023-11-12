@@ -4,10 +4,14 @@
 #include <iostream>
 using namespace std;
 #include "move.cpp"
+#include "SDL2/SDL_image.h"
 
-grid::grid(/* args */)
+grid::grid(SDL_Renderer *rend)
 {
     this->square = {100, 100, 100, 100};
+    SDL_Surface *imageSurface = IMG_Load("./pictures/sprites.png");
+    this->image = SDL_CreateTextureFromSurface(rend, imageSurface);
+    SDL_FreeSurface(imageSurface);
 }
 
 grid::~grid()
@@ -157,6 +161,7 @@ void grid::resetGrid()
 
                 this->tabGrid[i][y].setEmpty(true);
             }
+            this->tabGrid[i][y].set_clips();
         }
     }
 }
@@ -201,11 +206,13 @@ void grid::showGrid(SDL_Renderer *rend)
 
             if (!this->tabGrid[i][y].getEmpty())
             {
-                SDL_Color color = this->tabGrid[i][y].getColor();
-                SDL_SetRenderDrawColor(rend, color.r, color.g, color.b, 255);
 
-                SDL_Rect temp = this->tabGrid[i][y].getPiece();
-                SDL_RenderFillRect(rend, &temp);
+                SDL_Color color = this->tabGrid[i][y].getColor();
+                // SDL_SetRenderDrawColor(rend, color.r, color.g, color.b, 255);
+                SDL_Rect temp = this->tabGrid[i][y].getPiece(), temp2 = this->tabGrid[i][y].getClip();
+
+                // SDL_RenderFillRect(rend, &temp);
+                SDL_RenderCopy(rend, this->image, &temp2, &temp);
             }
         }
     }
@@ -257,7 +264,7 @@ void grid::eventHolder(SDL_Event e, bool &quit)
             if (e.button.button == SDL_BUTTON_LEFT && this->isDragging)
             {
                 this->isDragging = false;
-                SDL_Rect temp, rect = tabGrid[this->indiceDragX][this->indiceDragY].getPiece();
+                SDL_Rect temp, rect = tabGrid[this->indiceDragX][this->indiceDragY].getPiece(), vide;
                 if (CoordonneinTuple(rect.x / 100 - 1, rect.y / 100 - 1, this->posibility))
                 {
                     if (this->turn == "black")
@@ -282,8 +289,10 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                     this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setMove(true);
                     this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setCamp(this->tabGrid[this->indiceDragX][this->indiceDragY].getCamp());
 
+                    this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].ClipChanger(this->tabGrid[this->indiceDragX][this->indiceDragY].getClip());
                     this->tabGrid[this->indiceDragX][this->indiceDragY].setType(0);
                     this->tabGrid[this->indiceDragX][this->indiceDragY].setCamp("");
+                    this->tabGrid[this->indiceDragX][this->indiceDragY].ClipChanger(vide);
                 }
                 else
                 {

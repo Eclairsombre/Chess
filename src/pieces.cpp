@@ -28,6 +28,11 @@ SDL_Rect pieces::getPiece()
     return this->rect;
 }
 
+SDL_Rect pieces::getClip()
+{
+    return this->clip;
+}
+
 void pieces::setColor(SDL_Color c)
 {
     this->color = c;
@@ -76,4 +81,116 @@ void pieces::setCamp(string s)
 string pieces::getCamp()
 {
     return this->camp;
+}
+
+void pieces::ClipChanger(SDL_Rect r)
+{
+    this->clip = r;
+}
+void pieces::set_clips()
+{
+    switch (this->typePiece)
+    {
+    case 1:
+        if (this->camp == "black")
+        {
+            this->clip.h = 170;
+            this->clip.w = 170;
+            this->clip.x = 1013;
+            this->clip.y = 216;
+        }
+        else
+        {
+            this->clip.h = 170;
+            this->clip.w = 170;
+            this->clip.x = 1013;
+            this->clip.y = 22;
+        }
+        break;
+    case 2:
+        if (this->camp == "black")
+        {
+            this->clip.h = 170;
+            this->clip.w = 170;
+            this->clip.x = 816;
+            this->clip.y = 216;
+        }
+        else
+        {
+            this->clip.h = 170;
+            this->clip.w = 170;
+            this->clip.x = 816;
+            this->clip.y = 22;
+        }
+        break;
+
+    case 3:
+        if (this->camp == "black")
+        {
+            this->clip.h = 170;
+            this->clip.w = 170;
+            this->clip.x = 618;
+            this->clip.y = 216;
+        }
+        else
+        {
+            this->clip.h = 170;
+            this->clip.w = 170;
+            this->clip.x = 618;
+            this->clip.y = 22;
+        }
+        break;
+
+    case 4:
+        if (this->camp == "black")
+        {
+            this->clip.h = 170;
+            this->clip.w = 170;
+            this->clip.x = 415;
+            this->clip.y = 216;
+        }
+        else
+        {
+            this->clip.h = 170;
+            this->clip.w = 170;
+            this->clip.x = 415;
+            this->clip.y = 16;
+        }
+        break;
+    case 5:
+        if (this->camp == "black")
+        {
+            this->clip.h = 177;
+            this->clip.w = 170;
+            this->clip.x = 212;
+            this->clip.y = 216;
+        }
+        else
+        {
+            this->clip.h = 177;
+            this->clip.w = 170;
+            this->clip.x = 212;
+            this->clip.y = 16;
+        }
+        break;
+    case 6:
+        if (this->camp == "black")
+        {
+            this->clip.h = 177;
+            this->clip.w = 170;
+            this->clip.x = 10;
+            this->clip.y = 216;
+        }
+        else
+        {
+            this->clip.h = 177;
+            this->clip.w = 170;
+            this->clip.x = 10;
+            this->clip.y = 16;
+        }
+        break;
+
+    default:
+        break;
+    }
 }
