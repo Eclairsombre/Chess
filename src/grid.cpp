@@ -71,7 +71,7 @@ void grid::resetGrid()
                     }
                 }
 
-                SDL_Rect rect = {120 + i * 100, 120 + y * 100, 60, 60};
+                SDL_Rect rect = {115 + i * 100, 115 + y * 100, 65, 65};
 
                 this->tabGrid[i][y].setType(1);
 
@@ -220,6 +220,11 @@ void grid::showGrid(SDL_Renderer *rend)
 
 void grid::eventHolder(SDL_Event e, bool &quit)
 {
+    if (this->checkmate)
+    {
+        cout << this->winner << endl;
+        quit = true;
+    }
     while (SDL_PollEvent(&e))
     {
 
@@ -245,7 +250,7 @@ void grid::eventHolder(SDL_Event e, bool &quit)
 
                                 indiceDragX = i;
                                 indiceDragY = y;
-                                posibleMove(i, y, this->tabGrid[i][y], this->tabGrid, posibility);
+                                this->posibleMove(i, y, this->tabGrid[i][y], this->tabGrid, posibility);
                                 cout << "Move : " << endl;
                                 for (int i = 0; i < posibility.size(); i++)
                                 {

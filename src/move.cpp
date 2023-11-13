@@ -4,8 +4,6 @@
 #include <iostream>
 using namespace std;
 
-void posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility);
-
 void movePion(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility)
 {
     if (p.getDirection() == (string) "Haut")
@@ -674,7 +672,7 @@ bool CoordonneinTuple(int x, int y, vector<tuple<int, int>> &posibility)
     return false;
 }
 
-bool checkCaseMate(const int x, const int z, pieces p, pieces tab[10][10], string camp, int &a, int &b)
+bool grid::checkCaseMate(const int x, const int z, pieces p, pieces tab[10][10], string camp, int &a, int &b)
 {
     vector<tuple<int, int>> otherPieceDeplacement;
     for (int i = 0; i < 8; i++)
@@ -686,10 +684,10 @@ bool checkCaseMate(const int x, const int z, pieces p, pieces tab[10][10], strin
                 if (tab[i][y].getCamp() == "black" && tab[i][y].getType() != 6)
                 {
 
-                    posibleMove(i, y, tab[i][y], tab, otherPieceDeplacement);
+                    this->posibleMove(i, y, tab[i][y], tab, otherPieceDeplacement);
                     if (CoordonneinTuple(x, z, otherPieceDeplacement))
                     {
-                        cout << "Mate" << endl;
+
                         a = i;
                         b = y;
                         return true;
@@ -700,12 +698,12 @@ bool checkCaseMate(const int x, const int z, pieces p, pieces tab[10][10], strin
             {
                 if (tab[i][y].getCamp() == "white" && tab[i][y].getType() != 6)
                 {
-                    posibleMove(i, y, tab[i][y], tab, otherPieceDeplacement);
+                    this->posibleMove(i, y, tab[i][y], tab, otherPieceDeplacement);
                     if (CoordonneinTuple(x, z, otherPieceDeplacement))
                     {
                         a = i;
                         b = y;
-                        cout << "Mate" << endl;
+
                         return true;
                     }
                 }
@@ -715,22 +713,59 @@ bool checkCaseMate(const int x, const int z, pieces p, pieces tab[10][10], strin
     return false;
 }
 
-bool checkStopMate(pieces p, pieces tab[10][10], string camp, int a, int b)
+bool grid::checkStopMate(pieces p, pieces tab[10][10], string camp, int a, int b, int x, int z)
 {
     vector<tuple<int, int>> caseMate, temp;
-    posibleMove(a, b, tab[a][b], tab, caseMate);
+    int f, g;
+    this->posibleMove(a, b, tab[a][b], tab, caseMate);
     for (int i = 0; i < 8; i++)
     {
         for (int y = 0; y < 8; y++)
         {
-            if (camp == "white")
+            if (camp == "black" && tab[i][y].getCamp() == "black" && tab[i][y].getType() != 6)
             {
+
+                this->posibleMove(i, y, tab[i][y], tab, this->move);
+                for (int j = 0; j < this->move.size(); j++)
+                {
+                    if (CoordonneinTuple(get<0>(this->move[j]), get<1>(this->move[j]), caseMate))
+                    {
+
+                        tab[get<0>(this->move[j])][get<1>(this->move[j])].setEmpty(false);
+                        if (!checkCaseMate(x, z, tab[x][z], tab, tab[x][z].getCamp(), f, g))
+                        {
+                            cout << tab[i][y].getType() << endl;
+                            return true;
+                        }
+                        tab[get<0>(this->move[j])][get<1>(this->move[j])].setEmpty(true);
+                    }
+                }
+            }
+            else if (camp == "white" && tab[i][y].getCamp() == "white" && tab[i][y].getType() != 6)
+            {
+
+                this->posibleMove(i, y, tab[i][y], tab, this->move);
+                for (int j = 0; j < this->move.size(); j++)
+                {
+                    if (CoordonneinTuple(get<0>(this->move[j]), get<1>(this->move[j]), caseMate))
+                    {
+
+                        tab[get<0>(this->move[j])][get<1>(this->move[j])].setEmpty(false);
+                        if (!checkCaseMate(x, z, tab[x][z], tab, tab[x][z].getCamp(), f, g))
+                        {
+                            cout << tab[i][y].getType() << endl;
+                            return true;
+                        }
+                        tab[get<0>(this->move[j])][get<1>(this->move[j])].setEmpty(true);
+                    }
+                }
             }
         }
     }
+    return false;
 }
 
-void moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility)
+void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility)
 {
     int a, b;
     if (x + 1 <= 7)
@@ -799,10 +834,22 @@ void moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>>
     }
     if (checkCaseMate(x, y, p, tab, tab[x][y].getCamp(), a, b) && posibility.size() == 0)
     {
+        if (!this->checkStopMate(p, tab, tab[x][y].getCamp(), a, b, x, y))
+        {
+            this->checkmate = true;
+            if (tab[x][y].getCamp() == "white")
+            {
+                this->winner = "black";
+            }
+            else
+            {
+                this->winner = "white";
+            }
+        }
     }
 }
 
-void posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility)
+void grid::posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility)
 {
     vector<tuple<int, int>> temp;
     posibility = temp;
@@ -827,7 +874,7 @@ void posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, i
         moveDame(x, y, p, tab, posibility);
         break;
     case 6:
-        moveRoi(x, y, p, tab, posibility);
+        this->moveRoi(x, y, p, tab, posibility);
         break;
 
     default:

@@ -16,8 +16,10 @@ private:
     int offsetX, offsetY, indiceDragX, indiceDragY;
     bool checkmate = false;
     string winner = "", turn = "white", playerOneCamp, playerTwoCamp;
-
-    tuple<int, int> posRoiWhite = {}, posRoiBlack = {};
+    vector<tuple<int, int>> move;
+    tuple<int, int>
+        posRoiWhite = {},
+        posRoiBlack = {};
 
 public:
     grid(SDL_Renderer *rend);
@@ -27,6 +29,10 @@ public:
     void resetGrid();
     void eventHolder(SDL_Event e, bool &quit);
     tuple<bool, string> checkMate();
+    bool checkStopMate(pieces p, pieces tab[10][10], string camp, int a, int b, int x, int z);
+    void moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility);
+    void posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility);
+    bool checkCaseMate(const int x, const int z, pieces p, pieces tab[10][10], string camp, int &a, int &b);
 };
 
 #endif

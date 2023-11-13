@@ -60,7 +60,9 @@
     "iostream": "cpp",
     "numbers": "cpp",
     "tuple": "cpp",
-    "random": "cpp"
+    "random": "cpp",
+    "array": "cpp",
+    "utility": "cpp"
   },
   "discord.enabled": true
 }
