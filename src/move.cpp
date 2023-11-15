@@ -674,6 +674,7 @@ bool CoordonneinTuple(int x, int y, vector<tuple<int, int>> &posibility)
 
 bool grid::checkCaseMate(const int x, const int z, pieces p, pieces tab[10][10], string camp, int &a, int &b)
 {
+
     vector<tuple<int, int>> otherPieceDeplacement;
     for (int i = 0; i < 8; i++)
     {
@@ -765,9 +766,10 @@ bool grid::checkStopMate(pieces p, pieces tab[10][10], string camp, int a, int b
     return false;
 }
 
-void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility)
+void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po)
 {
     int a, b;
+
     if (x + 1 <= 7)
     {
         if (y + 1 <= 7)
@@ -775,7 +777,7 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
             if (tab[x + 1][y + 1].getEmpty() && !checkCaseMate(x + 1, y + 1, p, tab, tab[x][y].getCamp(), a, b))
             {
 
-                posibility.push_back(make_tuple(x + 1, y + 1));
+                po.push_back(make_tuple(x + 1, y + 1));
             }
         }
         if (y - 1 >= 0)
@@ -783,7 +785,7 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
             if (tab[x + 1][y - 1].getEmpty() && !checkCaseMate(x + 1, y - 1, p, tab, tab[x][y].getCamp(), a, b))
             {
 
-                posibility.push_back(make_tuple(x + 1, y - 1));
+                po.push_back(make_tuple(x + 1, y - 1));
             }
         }
         if (tab[x + 1][y].getEmpty() && !checkCaseMate(x + 1, y, p, tab, tab[x][y].getCamp(), a, b))
@@ -799,7 +801,7 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
             if (tab[x - 1][y + 1].getEmpty() && !checkCaseMate(x - 1, y + 1, p, tab, tab[x][y].getCamp(), a, b))
             {
 
-                posibility.push_back(make_tuple(x - 1, y + 1));
+                po.push_back(make_tuple(x - 1, y + 1));
             }
         }
         if (y - 1 >= 0)
@@ -813,7 +815,7 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
         if (tab[x - 1][y].getEmpty() && !checkCaseMate(x + 1, y, p, tab, tab[x][y].getCamp(), a, b))
         {
 
-            posibility.push_back(make_tuple(x - 1, y));
+            po.push_back(make_tuple(x - 1, y));
         }
     }
     if (y - 1 >= 0)
@@ -821,7 +823,7 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
         if (tab[x][y - 1].getEmpty() && !checkCaseMate(x, y + -1, p, tab, tab[x][y].getCamp(), a, b))
         {
 
-            posibility.push_back(make_tuple(x, y - 1));
+            po.push_back(make_tuple(x, y - 1));
         }
     }
     if (y + 1 <= 7)
@@ -829,11 +831,12 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
         if (tab[x][y + 1].getEmpty() && !checkCaseMate(x, y + 1, p, tab, tab[x][y].getCamp(), a, b))
         {
 
-            posibility.push_back(make_tuple(x, y + 1));
+            po.push_back(make_tuple(x, y + 1));
         }
     }
-    if (checkCaseMate(x, y, p, tab, tab[x][y].getCamp(), a, b) && posibility.size() == 0)
+    if (checkCaseMate(x, y, p, tab, tab[x][y].getCamp(), a, b) && po.size() == 0)
     {
+        cout << 1 << endl;
         if (!this->checkStopMate(p, tab, tab[x][y].getCamp(), a, b, x, y))
         {
             this->checkmate = true;

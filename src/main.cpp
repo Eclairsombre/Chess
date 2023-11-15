@@ -60,7 +60,7 @@ int main()
         SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
 
         SDL_RenderClear(rend);
-
+        g.checkEnd(stop);
         g.showGrid(rend);
 
         g.eventHolder(e, stop);

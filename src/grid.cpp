@@ -173,26 +173,33 @@ void grid::showGrid(SDL_Renderer *rend)
         for (int y = 1; y <= 8; y++)
         {
             this->square = {100 + 100 * (i - 1), 100 + 100 * (y - 1), 100, 100};
-            if (i % 2 != 0)
+            if (CoordonneinTuple(i - 1, y - 1, this->posibility))
             {
-                if (y % 2 == 0)
-                {
-                    SDL_SetRenderDrawColor(rend, 0, 150, 0, 255);
-                }
-                else if (y % 2 != 0)
-                {
-                    SDL_SetRenderDrawColor(rend, 232, 220, 202, 255);
-                }
+                SDL_SetRenderDrawColor(rend, 255, 255, 0, 255);
             }
             else
             {
-                if (y % 2 != 0)
+                if (i % 2 != 0)
                 {
-                    SDL_SetRenderDrawColor(rend, 0, 150, 0, 255);
+                    if (y % 2 == 0)
+                    {
+                        SDL_SetRenderDrawColor(rend, 0, 150, 0, 255);
+                    }
+                    else if (y % 2 != 0)
+                    {
+                        SDL_SetRenderDrawColor(rend, 232, 220, 202, 255);
+                    }
                 }
-                else if (y % 2 == 0)
+                else
                 {
-                    SDL_SetRenderDrawColor(rend, 232, 220, 202, 255);
+                    if (y % 2 != 0)
+                    {
+                        SDL_SetRenderDrawColor(rend, 0, 150, 0, 255);
+                    }
+                    else if (y % 2 == 0)
+                    {
+                        SDL_SetRenderDrawColor(rend, 232, 220, 202, 255);
+                    }
                 }
             }
             SDL_RenderFillRect(rend, &this->square);
@@ -220,11 +227,7 @@ void grid::showGrid(SDL_Renderer *rend)
 
 void grid::eventHolder(SDL_Event e, bool &quit)
 {
-    if (this->checkmate)
-    {
-        cout << this->winner << endl;
-        quit = true;
-    }
+
     while (SDL_PollEvent(&e))
     {
 
@@ -280,6 +283,17 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                     {
                         this->turn = "black";
                     }
+                    if (this->tabGrid[this->indiceDragX][this->indiceDragY].getType() == 6)
+                    {
+                        if (tabGrid[this->indiceDragX][this->indiceDragY].getCamp() == "black")
+                        {
+                            this->posRoiBlack = make_tuple(this->indiceDragX, this->indiceDragY);
+                        }
+                        else
+                        {
+                            this->posRoiWhite = make_tuple(this->indiceDragX, this->indiceDragY);
+                        }
+                    }
 
                     rect = {120 + ((rect.x / 100) - 1) * 100, 120 + ((rect.y / 100) - 1) * 100, 60, 60};
 
@@ -298,6 +312,8 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                     this->tabGrid[this->indiceDragX][this->indiceDragY].setType(0);
                     this->tabGrid[this->indiceDragX][this->indiceDragY].setCamp("");
                     this->tabGrid[this->indiceDragX][this->indiceDragY].ClipChanger(vide);
+                    vector<tuple<int, int>> f;
+                    this->posibility = f;
                 }
                 else
                 {
@@ -315,5 +331,18 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                 this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(temp);
             }
         }
+    }
+}
+
+void grid::checkEnd(bool &quit)
+{
+    vector<tuple<int, int>> temp;
+    this->check = temp;
+    this->moveRoi(get<0>(this->posRoiBlack), get<1>(this->posRoiBlack), this->tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)], this->tabGrid, this->check);
+    this->moveRoi(get<0>(this->posRoiWhite), get<1>(this->posRoiWhite), this->tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)], this->tabGrid, this->check);
+    if (this->checkmate)
+    {
+        cout << this->winner << endl;
+        quit = true;
     }
 }
