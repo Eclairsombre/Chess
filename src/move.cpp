@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-void movePion(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility)
+void movePion(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po)
 {
     if (p.getDirection() == (string) "Haut")
     {
@@ -12,18 +12,19 @@ void movePion(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
         {
             if (y - 1 >= 0 && tab[x][y - 1].getEmpty())
             {
-                posibility.push_back(make_tuple(x, y - 1));
+                po.push_back(make_tuple(x, y - 1));
             }
         }
         else
         {
+
             if (tab[x][y - 2].getEmpty())
             {
-                posibility.push_back(make_tuple(x, y - 2));
+                po.push_back(make_tuple(x, y - 2));
             }
             if (tab[x][y - 1].getEmpty())
             {
-                posibility.push_back(make_tuple(x, y - 1));
+                po.push_back(make_tuple(x, y - 1));
             }
         }
         if (x >= 1)
@@ -39,14 +40,14 @@ void movePion(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
 
                             if (tab[x - 1][y - 1].getCamp() == (string) "white")
                             {
-                                posibility.push_back(make_tuple(x - 1, y - 1));
+                                po.push_back(make_tuple(x - 1, y - 1));
                             }
                         }
                         else
                         {
                             if (tab[x - 1][y - 1].getCamp() == (string) "black")
                             {
-                                posibility.push_back(make_tuple(x - 1, y - 1));
+                                po.push_back(make_tuple(x - 1, y - 1));
                             }
                         }
                     }
@@ -64,14 +65,14 @@ void movePion(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
                         {
                             if (tab[x + 1][y - 1].getCamp() == (string) "white")
                             {
-                                posibility.push_back(make_tuple(x + 1, y - 1));
+                                po.push_back(make_tuple(x + 1, y - 1));
                             }
                         }
                         else
                         {
                             if (tab[x + 1][y - 1].getCamp() == (string) "black")
                             {
-                                posibility.push_back(make_tuple(x + 1, y - 1));
+                                po.push_back(make_tuple(x + 1, y - 1));
                             }
                         }
                     }
@@ -86,18 +87,18 @@ void movePion(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
         {
             if (y + 1 <= 7 && tab[x][y + 1].getEmpty())
             {
-                posibility.push_back(make_tuple(x, y + 1));
+                po.push_back(make_tuple(x, y + 1));
             }
         }
         else
         {
             if (tab[x][y + 2].getEmpty())
             {
-                posibility.push_back(make_tuple(x, y + 1));
+                po.push_back(make_tuple(x, y + 1));
             }
             if (tab[x][y + 1].getEmpty())
             {
-                posibility.push_back(make_tuple(x, y + 2));
+                po.push_back(make_tuple(x, y + 2));
             }
         }
         if (x >= 1)
@@ -108,14 +109,14 @@ void movePion(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
                 {
                     if (tab[x - 1][y + 1].getCamp() == (string) "white")
                     {
-                        posibility.push_back(make_tuple(x - 1, y + 1));
+                        po.push_back(make_tuple(x - 1, y + 1));
                     }
                 }
                 else
                 {
                     if (tab[x + 1][y + 1].getCamp() == (string) "black")
                     {
-                        posibility.push_back(make_tuple(x + 1, y + 1));
+                        po.push_back(make_tuple(x + 1, y + 1));
                     }
                 }
             }
@@ -127,14 +128,14 @@ void movePion(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
                     {
                         if (tab[x + 1][y + 1].getCamp() == (string) "white")
                         {
-                            posibility.push_back(make_tuple(x + 1, y + 1));
+                            po.push_back(make_tuple(x + 1, y + 1));
                         }
                     }
                     else
                     {
                         if (tab[x + 1][y + 1].getCamp() == (string) "black")
                         {
-                            posibility.push_back(make_tuple(x + 1, y + 1));
+                            po.push_back(make_tuple(x + 1, y + 1));
                         }
                     }
                 }
@@ -143,7 +144,7 @@ void movePion(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
     }
 }
 
-void moveTour(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility)
+void moveTour(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po)
 {
     bool stop = false;
     for (int i = x + 1; i < 8; i++)
@@ -154,7 +155,7 @@ void moveTour(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
 
             if (!stop)
             {
-                posibility.push_back(make_tuple(i, y));
+                po.push_back(make_tuple(i, y));
             }
         }
         else
@@ -165,14 +166,14 @@ void moveTour(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
                 {
                     if (tab[i][y].getCamp() == (string) "white")
                     {
-                        posibility.push_back(make_tuple(i, y));
+                        po.push_back(make_tuple(i, y));
                     }
                 }
                 else
                 {
                     if (tab[i][y].getCamp() == (string) "black")
                     {
-                        posibility.push_back(make_tuple(i, y));
+                        po.push_back(make_tuple(i, y));
                     }
                 }
             }
@@ -188,7 +189,7 @@ void moveTour(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
             if (!stop)
             {
 
-                posibility.push_back(make_tuple(i, y));
+                po.push_back(make_tuple(i, y));
             }
         }
         else
@@ -199,14 +200,14 @@ void moveTour(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
                 {
                     if (tab[i][y].getCamp() == (string) "white")
                     {
-                        posibility.push_back(make_tuple(i, y));
+                        po.push_back(make_tuple(i, y));
                     }
                 }
                 else
                 {
                     if (tab[i][y].getCamp() == (string) "black")
                     {
-                        posibility.push_back(make_tuple(i, y));
+                        po.push_back(make_tuple(i, y));
                     }
                 }
             }
@@ -222,7 +223,7 @@ void moveTour(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
 
             if (!stop)
             {
-                posibility.push_back(make_tuple(x, i));
+                po.push_back(make_tuple(x, i));
             }
         }
         else
@@ -233,14 +234,14 @@ void moveTour(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
                 {
                     if (tab[x][i].getCamp() == (string) "white")
                     {
-                        posibility.push_back(make_tuple(x, i));
+                        po.push_back(make_tuple(x, i));
                     }
                 }
                 else
                 {
                     if (tab[x][i].getCamp() == (string) "black")
                     {
-                        posibility.push_back(make_tuple(x, i));
+                        po.push_back(make_tuple(x, i));
                     }
                 }
             }
@@ -256,7 +257,7 @@ void moveTour(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
             if (!stop)
             {
 
-                posibility.push_back(make_tuple(x, i));
+                po.push_back(make_tuple(x, i));
             }
         }
         else
@@ -267,14 +268,14 @@ void moveTour(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
                 {
                     if (tab[x][i].getCamp() == (string) "white")
                     {
-                        posibility.push_back(make_tuple(x, i));
+                        po.push_back(make_tuple(x, i));
                     }
                 }
                 else
                 {
                     if (tab[x][i].getCamp() == (string) "black")
                     {
-                        posibility.push_back(make_tuple(x, i));
+                        po.push_back(make_tuple(x, i));
                     }
                 }
             }
@@ -283,7 +284,7 @@ void moveTour(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
     }
 }
 
-void moveCavalier(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility)
+void moveCavalier(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po)
 {
     if (y - 1 >= 0)
     {
@@ -291,7 +292,7 @@ void moveCavalier(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, 
         {
             if (tab[x + 2][y - 1].getEmpty())
             {
-                posibility.push_back(make_tuple(x + 2, y - 1));
+                po.push_back(make_tuple(x + 2, y - 1));
             }
             else
             {
@@ -299,14 +300,14 @@ void moveCavalier(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, 
                 {
                     if (tab[x + 2][y - 1].getCamp() == (string) "white")
                     {
-                        posibility.push_back(make_tuple(x + 2, y - 1));
+                        po.push_back(make_tuple(x + 2, y - 1));
                     }
                 }
                 else
                 {
                     if (tab[x + 2][y - 1].getCamp() == (string) "black")
                     {
-                        posibility.push_back(make_tuple(x + 2, y - 1));
+                        po.push_back(make_tuple(x + 2, y - 1));
                     }
                 }
             }
@@ -315,7 +316,7 @@ void moveCavalier(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, 
         {
             if (tab[x - 2][y - 1].getEmpty())
             {
-                posibility.push_back(make_tuple(x - 2, y - 1));
+                po.push_back(make_tuple(x - 2, y - 1));
             }
 
             else
@@ -324,14 +325,14 @@ void moveCavalier(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, 
                 {
                     if (tab[x - 2][y - 1].getCamp() == (string) "white")
                     {
-                        posibility.push_back(make_tuple(x - 2, y - 1));
+                        po.push_back(make_tuple(x - 2, y - 1));
                     }
                 }
                 else
                 {
                     if (tab[x - 2][y - 1].getCamp() == (string) "black")
                     {
-                        posibility.push_back(make_tuple(x - 2, y - 1));
+                        po.push_back(make_tuple(x - 2, y - 1));
                     }
                 }
             }
@@ -344,7 +345,7 @@ void moveCavalier(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, 
         {
             if (tab[x + 1][y - 2].getEmpty())
             {
-                posibility.push_back(make_tuple(x + 1, y - 2));
+                po.push_back(make_tuple(x + 1, y - 2));
             }
             else
             {
@@ -352,14 +353,14 @@ void moveCavalier(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, 
                 {
                     if (tab[x + 1][y - 2].getCamp() == (string) "white")
                     {
-                        posibility.push_back(make_tuple(x + 1, y - 2));
+                        po.push_back(make_tuple(x + 1, y - 2));
                     }
                 }
                 else
                 {
                     if (tab[x + 1][y - 2].getCamp() == (string) "black")
                     {
-                        posibility.push_back(make_tuple(x + 1, y - 2));
+                        po.push_back(make_tuple(x + 1, y - 2));
                     }
                 }
             }
@@ -368,7 +369,7 @@ void moveCavalier(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, 
         {
             if (tab[x - 1][y - 2].getEmpty())
             {
-                posibility.push_back(make_tuple(x - 1, y - 2));
+                po.push_back(make_tuple(x - 1, y - 2));
             }
 
             else
@@ -377,14 +378,14 @@ void moveCavalier(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, 
                 {
                     if (tab[x - 1][y - 2].getCamp() == (string) "white")
                     {
-                        posibility.push_back(make_tuple(x - 1, y - 2));
+                        po.push_back(make_tuple(x - 1, y - 2));
                     }
                 }
                 else
                 {
                     if (tab[x - 1][y - 2].getCamp() == (string) "black")
                     {
-                        posibility.push_back(make_tuple(x - 1, y - 2));
+                        po.push_back(make_tuple(x - 1, y - 2));
                     }
                 }
             }
@@ -396,7 +397,7 @@ void moveCavalier(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, 
         {
             if (tab[x + 1][y + 2].getEmpty())
             {
-                posibility.push_back(make_tuple(x + 1, y + 2));
+                po.push_back(make_tuple(x + 1, y + 2));
             }
             else
             {
@@ -404,14 +405,14 @@ void moveCavalier(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, 
                 {
                     if (tab[x + 1][y + 2].getCamp() == (string) "white")
                     {
-                        posibility.push_back(make_tuple(x + 1, y + 2));
+                        po.push_back(make_tuple(x + 1, y + 2));
                     }
                 }
                 else
                 {
                     if (tab[x + 1][y + 2].getCamp() == (string) "black")
                     {
-                        posibility.push_back(make_tuple(x + 1, y + 2));
+                        po.push_back(make_tuple(x + 1, y + 2));
                     }
                 }
             }
@@ -420,7 +421,7 @@ void moveCavalier(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, 
         {
             if (tab[x - 1][y + 2].getEmpty())
             {
-                posibility.push_back(make_tuple(x - 1, y + 2));
+                po.push_back(make_tuple(x - 1, y + 2));
             }
 
             else
@@ -429,14 +430,14 @@ void moveCavalier(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, 
                 {
                     if (tab[x - 1][y + 2].getCamp() == (string) "white")
                     {
-                        posibility.push_back(make_tuple(x - 1, y + 2));
+                        po.push_back(make_tuple(x - 1, y + 2));
                     }
                 }
                 else
                 {
                     if (tab[x - 1][y + 2].getCamp() == (string) "black")
                     {
-                        posibility.push_back(make_tuple(x - 1, y + 2));
+                        po.push_back(make_tuple(x - 1, y + 2));
                     }
                 }
             }
@@ -449,7 +450,7 @@ void moveCavalier(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, 
         {
             if (tab[x + 2][y + 1].getEmpty())
             {
-                posibility.push_back(make_tuple(x + 2, y + 1));
+                po.push_back(make_tuple(x + 2, y + 1));
             }
             else
             {
@@ -457,14 +458,14 @@ void moveCavalier(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, 
                 {
                     if (tab[x + 2][y + 1].getCamp() == (string) "white")
                     {
-                        posibility.push_back(make_tuple(x + 2, y + 1));
+                        po.push_back(make_tuple(x + 2, y + 1));
                     }
                 }
                 else
                 {
                     if (tab[x + 2][y + 1].getCamp() == (string) "black")
                     {
-                        posibility.push_back(make_tuple(x + 2, y + 1));
+                        po.push_back(make_tuple(x + 2, y + 1));
                     }
                 }
             }
@@ -473,7 +474,7 @@ void moveCavalier(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, 
         {
             if (tab[x - 2][y + 1].getEmpty())
             {
-                posibility.push_back(make_tuple(x - 2, y + 1));
+                po.push_back(make_tuple(x - 2, y + 1));
             }
 
             else
@@ -482,14 +483,14 @@ void moveCavalier(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, 
                 {
                     if (tab[x - 2][y + 1].getCamp() == (string) "white")
                     {
-                        posibility.push_back(make_tuple(x - 2, y + 1));
+                        po.push_back(make_tuple(x - 2, y + 1));
                     }
                 }
                 else
                 {
                     if (tab[x - 2][y + 1].getCamp() == (string) "black")
                     {
-                        posibility.push_back(make_tuple(x - 2, y + 1));
+                        po.push_back(make_tuple(x - 2, y + 1));
                     }
                 }
             }
@@ -497,7 +498,7 @@ void moveCavalier(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, 
     }
 }
 
-void moveFou(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility)
+void moveFou(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po)
 {
     bool stopH = false, stopB = false;
     int temp = 1;
@@ -514,7 +515,7 @@ void moveFou(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>>
 
                     if (!stopB)
                     {
-                        posibility.push_back(make_tuple(i, y + temp));
+                        po.push_back(make_tuple(i, y + temp));
                     }
                 }
                 else
@@ -525,14 +526,14 @@ void moveFou(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>>
                         {
                             if (tab[i][y + temp].getCamp() == (string) "white")
                             {
-                                posibility.push_back(make_tuple(i, y + temp));
+                                po.push_back(make_tuple(i, y + temp));
                             }
                         }
                         else
                         {
                             if (tab[i][y + temp].getCamp() == (string) "black")
                             {
-                                posibility.push_back(make_tuple(i, y + temp));
+                                po.push_back(make_tuple(i, y + temp));
                             }
                         }
                     }
@@ -547,7 +548,7 @@ void moveFou(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>>
                     if (!stopH)
                     {
 
-                        posibility.push_back(make_tuple(i, y - temp));
+                        po.push_back(make_tuple(i, y - temp));
                     }
                 }
                 else
@@ -559,14 +560,14 @@ void moveFou(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>>
                         {
                             if (tab[i][y - temp].getCamp() == (string) "white")
                             {
-                                posibility.push_back(make_tuple(i, y - temp));
+                                po.push_back(make_tuple(i, y - temp));
                             }
                         }
                         else
                         {
                             if (tab[i][y - temp].getCamp() == (string) "black")
                             {
-                                posibility.push_back(make_tuple(i, y - temp));
+                                po.push_back(make_tuple(i, y - temp));
                             }
                         }
                     }
@@ -592,7 +593,7 @@ void moveFou(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>>
 
                     if (!stopB)
                     {
-                        posibility.push_back(make_tuple(i, y + temp));
+                        po.push_back(make_tuple(i, y + temp));
                     }
                 }
                 else
@@ -603,14 +604,14 @@ void moveFou(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>>
                         {
                             if (tab[i][y + temp].getCamp() == (string) "white")
                             {
-                                posibility.push_back(make_tuple(i, y + temp));
+                                po.push_back(make_tuple(i, y + temp));
                             }
                         }
                         else
                         {
                             if (tab[i][y + temp].getCamp() == (string) "black")
                             {
-                                posibility.push_back(make_tuple(i, y + temp));
+                                po.push_back(make_tuple(i, y + temp));
                             }
                         }
                     }
@@ -624,7 +625,7 @@ void moveFou(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>>
 
                     if (!stopH)
                     {
-                        posibility.push_back(make_tuple(i, y - temp));
+                        po.push_back(make_tuple(i, y - temp));
                     }
                 }
                 else
@@ -635,14 +636,14 @@ void moveFou(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>>
                         {
                             if (tab[i][y - temp].getCamp() == (string) "white")
                             {
-                                posibility.push_back(make_tuple(i, y - temp));
+                                po.push_back(make_tuple(i, y - temp));
                             }
                         }
                         else
                         {
                             if (tab[i][y - temp].getCamp() == (string) "black")
                             {
-                                posibility.push_back(make_tuple(i, y - temp));
+                                po.push_back(make_tuple(i, y - temp));
                             }
                         }
                     }
@@ -654,17 +655,17 @@ void moveFou(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>>
     }
 }
 
-void moveDame(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility)
+void moveDame(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po)
 {
-    moveTour(x, y, p, tab, posibility);
-    moveFou(x, y, p, tab, posibility);
+    moveTour(x, y, p, tab, po);
+    moveFou(x, y, p, tab, po);
 }
 
-bool CoordonneinTuple(int x, int y, vector<tuple<int, int>> &posibility)
+bool CoordonneinTuple(int x, int y, vector<tuple<int, int>> &po)
 {
-    for (int i = 0; i < posibility.size(); i++)
+    for (int i = 0; i < po.size(); i++)
     {
-        if (get<0>(posibility[i]) == x && get<1>(posibility[i]) == y)
+        if (get<0>(po[i]) == x && get<1>(po[i]) == y)
         {
             return true;
         }
@@ -766,10 +767,34 @@ bool grid::checkStopMate(pieces p, pieces tab[10][10], string camp, int a, int b
     return false;
 }
 
+void checkRock(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po)
+{
+    if (!tab[4][y].getMove())
+    {
+        if (!tab[7][y].getMove())
+        {
+            if (tab[5][y].getEmpty() && tab[6][y].getEmpty())
+            {
+
+                po.push_back(make_tuple(7, y));
+            }
+        }
+        if (!tab[0][y].getMove())
+        {
+            if (tab[1][y].getEmpty() && tab[2][y].getEmpty() && tab[3][y].getEmpty())
+            {
+
+                po.push_back(make_tuple(0, y));
+            }
+        }
+    }
+}
+
 void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po)
 {
     int a, b;
 
+    checkRock(x, y, p, tab, po);
     if (x + 1 <= 7)
     {
         if (y + 1 <= 7)
@@ -791,7 +816,7 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
         if (tab[x + 1][y].getEmpty() && !checkCaseMate(x + 1, y, p, tab, tab[x][y].getCamp(), a, b))
         {
 
-            posibility.push_back(make_tuple(x + 1, y));
+            po.push_back(make_tuple(x + 1, y));
         }
     }
     if (x - 1 >= 0)
@@ -809,7 +834,7 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
             if (tab[x - 1][y - 1].getEmpty() && !checkCaseMate(x - 1, y - 1, p, tab, tab[x][y].getCamp(), a, b))
             {
 
-                posibility.push_back(make_tuple(x - 1, y - 1));
+                po.push_back(make_tuple(x - 1, y - 1));
             }
         }
         if (tab[x - 1][y].getEmpty() && !checkCaseMate(x + 1, y, p, tab, tab[x][y].getCamp(), a, b))
@@ -852,32 +877,32 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
     }
 }
 
-void grid::posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility)
+void grid::posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po)
 {
     vector<tuple<int, int>> temp;
-    posibility = temp;
+    po = temp;
 
     switch (p.getType())
     {
     case 1:
-        movePion(x, y, p, tab, posibility);
+        movePion(x, y, p, tab, po);
 
         break;
     case 2:
-        moveTour(x, y, p, tab, posibility);
+        moveTour(x, y, p, tab, po);
         break;
     case 3:
-        moveCavalier(x, y, p, tab, posibility);
+        moveCavalier(x, y, p, tab, po);
         break;
     case 4:
-        moveFou(x, y, p, tab, posibility);
+        moveFou(x, y, p, tab, po);
         break;
 
     case 5:
-        moveDame(x, y, p, tab, posibility);
+        moveDame(x, y, p, tab, po);
         break;
     case 6:
-        this->moveRoi(x, y, p, tab, posibility);
+        this->moveRoi(x, y, p, tab, po);
         break;
 
     default:

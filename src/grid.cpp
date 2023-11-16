@@ -22,7 +22,7 @@ void grid::resetGrid()
 {
     SDL_Color color;
     int chooseCamp = rand() % 2;
-    cout << chooseCamp << endl;
+
     for (int i = 0; i < 8; i++)
     {
         for (int y = 0; y < 8; y++)
@@ -253,7 +253,7 @@ void grid::eventHolder(SDL_Event e, bool &quit)
 
                                 indiceDragX = i;
                                 indiceDragY = y;
-                                this->posibleMove(i, y, this->tabGrid[i][y], this->tabGrid, posibility);
+                                this->posibleMove(i, y, this->tabGrid[i][y], this->tabGrid, this->posibility);
                                 cout << "Move : " << endl;
                                 for (int i = 0; i < posibility.size(); i++)
                                 {

@@ -31,7 +31,7 @@ public:
     tuple<bool, string> checkMate();
     bool checkStopMate(pieces p, pieces tab[10][10], string camp, int a, int b, int x, int z);
     void moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po);
-    void posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &posibility);
+    void posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po);
     bool checkCaseMate(const int x, const int z, pieces p, pieces tab[10][10], string camp, int &a, int &b);
     void checkEnd(bool &quit);
 };
