@@ -254,6 +254,10 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                                 indiceDragX = i;
                                 indiceDragY = y;
                                 this->posibleMove(i, y, this->tabGrid[i][y], this->tabGrid, this->posibility);
+                                if (this->tabGrid[this->indiceDragX][this->indiceDragY].getType() == 6)
+                                {
+                                    this->CoCastle = this->canCastle(this->indiceDragX, this->indiceDragY, this->tabGrid[this->indiceDragX][this->indiceDragY], this->tabGrid, this->posibility);
+                                }
                                 cout << "Move : " << endl;
                                 for (int i = 0; i < posibility.size(); i++)
                                 {
@@ -272,54 +276,8 @@ void grid::eventHolder(SDL_Event e, bool &quit)
             if (e.button.button == SDL_BUTTON_LEFT && this->isDragging)
             {
                 this->isDragging = false;
-                SDL_Rect temp, rect = tabGrid[this->indiceDragX][this->indiceDragY].getPiece(), vide;
-                if (CoordonneinTuple(rect.x / 100 - 1, rect.y / 100 - 1, this->posibility))
-                {
-                    if (this->turn == "black")
-                    {
-                        this->turn = "white";
-                    }
-                    else
-                    {
-                        this->turn = "black";
-                    }
-                    if (this->tabGrid[this->indiceDragX][this->indiceDragY].getType() == 6)
-                    {
-                        if (tabGrid[this->indiceDragX][this->indiceDragY].getCamp() == "black")
-                        {
-                            this->posRoiBlack = make_tuple(this->indiceDragX, this->indiceDragY);
-                        }
-                        else
-                        {
-                            this->posRoiWhite = make_tuple(this->indiceDragX, this->indiceDragY);
-                        }
-                    }
 
-                    rect = {120 + ((rect.x / 100) - 1) * 100, 120 + ((rect.y / 100) - 1) * 100, 60, 60};
-
-                    this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(temp);
-                    this->tabGrid[this->indiceDragX][this->indiceDragY].setEmpty(true);
-
-                    this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setColor(this->tabGrid[this->indiceDragX][this->indiceDragY].getColor());
-                    this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setPieces(rect);
-                    this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setEmpty(false);
-                    this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setType(this->tabGrid[this->indiceDragX][this->indiceDragY].getType());
-                    this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setDirection(this->tabGrid[this->indiceDragX][this->indiceDragY].getDirection());
-                    this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setMove(true);
-                    this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setCamp(this->tabGrid[this->indiceDragX][this->indiceDragY].getCamp());
-
-                    this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].ClipChanger(this->tabGrid[this->indiceDragX][this->indiceDragY].getClip());
-                    this->tabGrid[this->indiceDragX][this->indiceDragY].setType(0);
-                    this->tabGrid[this->indiceDragX][this->indiceDragY].setCamp("");
-                    this->tabGrid[this->indiceDragX][this->indiceDragY].ClipChanger(vide);
-                    vector<tuple<int, int>> f;
-                    this->posibility = f;
-                }
-                else
-                {
-                    rect = {120 + this->indiceDragX * 100, 120 + this->indiceDragY * 100, 60, 60};
-                    this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(rect);
-                }
+                this->performMove();
             }
         }
         else if (e.type == SDL_MOUSEMOTION)

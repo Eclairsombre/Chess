@@ -21,6 +21,8 @@ private:
         posRoiWhite = {},
         posRoiBlack = {};
 
+    tuple<bool, vector<tuple<int, int>>> CoCastle;
+
 public:
     grid(SDL_Renderer *rend);
     ~grid();
@@ -34,6 +36,8 @@ public:
     void posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po);
     bool checkCaseMate(const int x, const int z, pieces p, pieces tab[10][10], string camp, int &a, int &b);
     void checkEnd(bool &quit);
+    tuple<bool, vector<tuple<int, int>>> canCastle(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po);
+    void performMove();
 };
 
 #endif
