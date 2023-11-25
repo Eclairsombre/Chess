@@ -829,46 +829,46 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
                     }
                 }
             }
-            if (p.getCamp() == "black")
+        }
+        if (p.getCamp() == "black")
+        {
+
+            if (!tab[x + 1][y].getEmpty() && tab[x + 1][y].getCamp() == "white")
+            {
+                tab[x + 1][y].setEmpty(true);
+                if (!checkCaseMate(x + 1, y, p, tab, tab[x][y].getCamp(), a, b))
+                {
+                    po.push_back(make_tuple(x + 1, y));
+                }
+                tab[x + 1][y].setEmpty(false);
+            }
+            else if (tab[x + 1][y].getEmpty())
             {
 
-                if (!tab[x + 1][y].getEmpty() && tab[x + 1][y].getCamp() == "white")
+                if (!checkCaseMate(x + 1, y, p, tab, tab[x][y].getCamp(), a, b))
                 {
-                    tab[x + 1][y].setEmpty(true);
-                    if (!checkCaseMate(x + 1, y, p, tab, tab[x][y].getCamp(), a, b))
-                    {
-                        po.push_back(make_tuple(x + 1, y));
-                    }
-                    tab[x + 1][y].setEmpty(false);
-                }
-                else if (tab[x + 1][y].getEmpty())
-                {
-
-                    if (!checkCaseMate(x + 1, y, p, tab, tab[x][y].getCamp(), a, b))
-                    {
-                        po.push_back(make_tuple(x + 1, y));
-                    }
+                    po.push_back(make_tuple(x + 1, y));
                 }
             }
-            else
+        }
+        else
+        {
+
+            if (!tab[x + 1][y].getEmpty() && tab[x + 1][y].getCamp() == "black")
+            {
+                tab[x + 1][y].setEmpty(true);
+                if (!checkCaseMate(x + 1, y, p, tab, tab[x][y].getCamp(), a, b))
+                {
+                    po.push_back(make_tuple(x + 1, y));
+                }
+                tab[x + 1][y].setEmpty(false);
+            }
+            else if (tab[x + 1][y].getEmpty())
             {
 
-                if (!tab[x + 1][y].getEmpty() && tab[x + 1][y].getCamp() == "black")
+                if (!checkCaseMate(x + 1, y, p, tab, tab[x][y].getCamp(), a, b))
                 {
-                    tab[x + 1][y].setEmpty(true);
-                    if (!checkCaseMate(x + 1, y, p, tab, tab[x][y].getCamp(), a, b))
-                    {
-                        po.push_back(make_tuple(x + 1, y));
-                    }
-                    tab[x + 1][y].setEmpty(false);
-                }
-                else if (tab[x + 1][y].getEmpty())
-                {
-
-                    if (!checkCaseMate(x + 1, y, p, tab, tab[x][y].getCamp(), a, b))
-                    {
-                        po.push_back(make_tuple(x + 1, y));
-                    }
+                    po.push_back(make_tuple(x + 1, y));
                 }
             }
         }
@@ -963,6 +963,48 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
                     {
                         po.push_back(make_tuple(x - 1, y - 1));
                     }
+                }
+            }
+        }
+        if (p.getCamp() == "black")
+        {
+
+            if (!tab[x - 1][y].getEmpty() && tab[x - 1][y].getCamp() == "white")
+            {
+                tab[x - 1][y].setEmpty(true);
+                if (!checkCaseMate(x - 1, y, p, tab, tab[x][y].getCamp(), a, b))
+                {
+                    po.push_back(make_tuple(x - 1, y));
+                }
+                tab[x - 1][y].setEmpty(false);
+            }
+            else if (tab[x - 1][y].getEmpty())
+            {
+
+                if (!checkCaseMate(x - 1, y, p, tab, tab[x][y].getCamp(), a, b))
+                {
+                    po.push_back(make_tuple(x - 1, y));
+                }
+            }
+        }
+        else
+        {
+
+            if (!tab[x - 1][y].getEmpty() && tab[x - 1][y].getCamp() == "black")
+            {
+                tab[x - 1][y].setEmpty(true);
+                if (!checkCaseMate(x - 1, y, p, tab, tab[x][y].getCamp(), a, b))
+                {
+                    po.push_back(make_tuple(x - 1, y));
+                }
+                tab[x - 1][y].setEmpty(false);
+            }
+            else if (tab[x - 1][y].getEmpty())
+            {
+
+                if (!checkCaseMate(x - 1, y, p, tab, tab[x][y].getCamp(), a, b))
+                {
+                    po.push_back(make_tuple(x - 1, y));
                 }
             }
         }
