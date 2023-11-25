@@ -755,11 +755,12 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
                 }
                 else if (tab[x + 1][y + 1].getEmpty())
                 {
-
+                    tab[x][y].setEmpty(true);
                     if (!checkCaseMate(x + 1, y + 1, p, tab, tab[x][y].getCamp(), a, b))
                     {
                         po.push_back(make_tuple(x + 1, y + 1));
                     }
+                    tab[x][y].setEmpty(false);
                 }
             }
 
@@ -777,11 +778,12 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
                 }
                 else if (tab[x + 1][y + 1].getEmpty())
                 {
-
+                    tab[x][y].setEmpty(true);
                     if (!checkCaseMate(x + 1, y + 1, p, tab, tab[x][y].getCamp(), a, b))
                     {
                         po.push_back(make_tuple(x + 1, y + 1));
                     }
+                    tab[x][y].setEmpty(false);
                 }
             }
         }
@@ -801,11 +803,13 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
                 }
                 else if (tab[x + 1][y - 1].getEmpty())
                 {
+                    tab[x][y].setEmpty(true);
 
                     if (!checkCaseMate(x + 1, y - 1, p, tab, tab[x][y].getCamp(), a, b))
                     {
                         po.push_back(make_tuple(x + 1, y - 1));
                     }
+                    tab[x][y].setEmpty(false);
                 }
             }
             else
@@ -822,11 +826,12 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
                 }
                 else if (tab[x + 1][y - 1].getEmpty())
                 {
-
+                    tab[x][y].setEmpty(true);
                     if (!checkCaseMate(x + 1, y - 1, p, tab, tab[x][y].getCamp(), a, b))
                     {
                         po.push_back(make_tuple(x + 1, y - 1));
                     }
+                    tab[x][y].setEmpty(false);
                 }
             }
         }
@@ -844,11 +849,12 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
             }
             else if (tab[x + 1][y].getEmpty())
             {
-
+                tab[x][y].setEmpty(true);
                 if (!checkCaseMate(x + 1, y, p, tab, tab[x][y].getCamp(), a, b))
                 {
                     po.push_back(make_tuple(x + 1, y));
                 }
+                tab[x][y].setEmpty(false);
             }
         }
         else
@@ -865,11 +871,13 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
             }
             else if (tab[x + 1][y].getEmpty())
             {
+                tab[x][y].setEmpty(true);
 
                 if (!checkCaseMate(x + 1, y, p, tab, tab[x][y].getCamp(), a, b))
                 {
                     po.push_back(make_tuple(x + 1, y));
                 }
+                tab[x][y].setEmpty(false);
             }
         }
     }
@@ -892,11 +900,12 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
                 }
                 else if (tab[x - 1][y + 1].getEmpty())
                 {
-
+                    tab[x][y].setEmpty(true);
                     if (!checkCaseMate(x - 1, y + 1, p, tab, tab[x][y].getCamp(), a, b))
                     {
                         po.push_back(make_tuple(x - 1, y + 1));
                     }
+                    tab[x][y].setEmpty(false);
                 }
             }
             else
@@ -913,11 +922,12 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
                 }
                 else if (tab[x - 1][y + 1].getEmpty())
                 {
-
+                    tab[x][y].setEmpty(true);
                     if (!checkCaseMate(x - 1, y + 1, p, tab, tab[x][y].getCamp(), a, b))
                     {
                         po.push_back(make_tuple(x - 1, y + 1));
                     }
+                    tab[x][y].setEmpty(false);
                 }
             }
         }
@@ -937,11 +947,12 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
                 }
                 else if (tab[x - 1][y - 1].getEmpty())
                 {
-
+                    tab[x][y].setEmpty(true);
                     if (!checkCaseMate(x - 1, y - 1, p, tab, tab[x][y].getCamp(), a, b))
                     {
                         po.push_back(make_tuple(x - 1, y - 1));
                     }
+                    tab[x][y].setEmpty(false);
                 }
             }
             else
@@ -958,11 +969,13 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
                 }
                 else if (tab[x - 1][y - 1].getEmpty())
                 {
+                    tab[x][y].setEmpty(true);
 
                     if (!checkCaseMate(x - 1, y - 1, p, tab, tab[x][y].getCamp(), a, b))
                     {
                         po.push_back(make_tuple(x - 1, y - 1));
                     }
+                    tab[x][y].setEmpty(false);
                 }
             }
         }
@@ -980,11 +993,12 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
             }
             else if (tab[x - 1][y].getEmpty())
             {
-
+                tab[x][y].setEmpty(true);
                 if (!checkCaseMate(x - 1, y, p, tab, tab[x][y].getCamp(), a, b))
                 {
                     po.push_back(make_tuple(x - 1, y));
                 }
+                tab[x][y].setEmpty(false);
             }
         }
         else
@@ -1001,11 +1015,13 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
             }
             else if (tab[x - 1][y].getEmpty())
             {
+                tab[x][y].setEmpty(true);
 
                 if (!checkCaseMate(x - 1, y, p, tab, tab[x][y].getCamp(), a, b))
                 {
                     po.push_back(make_tuple(x - 1, y));
                 }
+                tab[x][y].setEmpty(false);
             }
         }
     }
@@ -1026,11 +1042,12 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
             }
             else if (tab[x][y - 1].getEmpty())
             {
-
+                tab[x][y].setEmpty(true);
                 if (!checkCaseMate(x, y - 1, p, tab, tab[x][y].getCamp(), a, b))
                 {
                     po.push_back(make_tuple(x, y - 1));
                 }
+                tab[x][y].setEmpty(false);
             }
         }
 
@@ -1048,11 +1065,13 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
             }
             else if (tab[x][y - 1].getEmpty())
             {
+                tab[x][y].setEmpty(true);
 
                 if (!checkCaseMate(x, y - 1, p, tab, tab[x][y].getCamp(), a, b))
                 {
                     po.push_back(make_tuple(x, y - 1));
                 }
+                tab[x][y].setEmpty(false);
             }
         }
     }
@@ -1072,11 +1091,12 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
             }
             else if (tab[x][y + 1].getEmpty())
             {
-
+                tab[x][y].setEmpty(true);
                 if (!checkCaseMate(x, y + 1, p, tab, tab[x][y].getCamp(), a, b))
                 {
                     po.push_back(make_tuple(x, y + 1));
                 }
+                tab[x][y].setEmpty(false);
             }
         }
         else
@@ -1094,12 +1114,14 @@ void grid::moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int,
             }
             else if (tab[x][y + 1].getEmpty())
             {
+                tab[x][y].setEmpty(true);
 
                 if (!checkCaseMate(x, y + 1, p, tab, tab[x][y].getCamp(), a, b))
 
                 {
                     po.push_back(make_tuple(x, y + 1));
                 }
+                tab[x][y].setEmpty(false);
             }
         }
     }

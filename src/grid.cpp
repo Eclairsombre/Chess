@@ -369,7 +369,7 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                         }
                         else
                         {
-
+                            cout << 1 << endl;
                             rect = {120 + this->indiceDragX * 100, 120 + this->indiceDragY * 100, 60, 60};
                             this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(rect);
                         }
@@ -383,7 +383,7 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                         }
                         else
                         {
-
+                            cout << 2 << endl;
                             rect = {120 + this->indiceDragX * 100, 120 + this->indiceDragY * 100, 60, 60};
                             this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(rect);
                         }
@@ -394,23 +394,19 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                 {
 
                     this->posibleMoveRoiBlack = this->checkStopMate(this->tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)], this->tabGrid, this->tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)].getCamp(), a, b, get<0>(this->posRoiBlack), get<1>(this->posRoiBlack));
-                    if (indiceDragX == get<0>(this->posRoiBlack) && indiceDragY == get<1>(this->posRoiBlack))
+
+                    for (int i = 0; i < this->posibility.size(); i++)
                     {
-                        this->moveRoi(get<0>(this->posRoiBlack), get<1>(this->posRoiBlack), this->tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)], this->tabGrid, this->posibility);
-
-                        for (int i = 0; i < this->posibility.size(); i++)
+                        if (CoordonneinTuple(e.button.x / 100 - 1, e.button.y / 100 - 1, this->posibility))
                         {
-                            if (CoordonneinTuple(e.button.x / 100 - 1, e.button.y / 100 - 1, this->posibility))
-                            {
-                                this->performMove();
-                                break;
-                            }
-                            else
-                            {
-
-                                rect = {120 + this->indiceDragX * 100, 120 + this->indiceDragY * 100, 60, 60};
-                                this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(rect);
-                            }
+                            this->performMove();
+                            break;
+                        }
+                        else
+                        {
+                            cout << 3 << endl;
+                            rect = {120 + this->indiceDragX * 100, 120 + this->indiceDragY * 100, 60, 60};
+                            this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(rect);
                         }
                     }
 
@@ -423,7 +419,7 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                         }
                         else
                         {
-
+                            cout << 4 << endl;
                             rect = {120 + this->indiceDragX * 100, 120 + this->indiceDragY * 100, 60, 60};
                             this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(rect);
                         }
