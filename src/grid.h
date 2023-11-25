@@ -3,6 +3,9 @@
 
 #include <SDL2/SDL.h>
 #include <tuple>
+#include <iostream>
+using namespace std;
+#include <vector>
 #include "pieces.cpp"
 
 class grid
@@ -42,6 +45,16 @@ public:
     void attackPion(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po);
     void attackRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po);
     void changePion(int x, int y);
+
+    pieces (*getTabGrid())[10];
+    string getTurn();
+    string getPlayerOneCamp();
+    string getPlayerTwoCamp();
+
+    void setTabGrid(pieces tab[10][10]);
+    void setTurn(string s);
+    void setPlayerOneCamp(string s);
+    void setPlayerTwoCamp(string s);
 };
 
 #endif

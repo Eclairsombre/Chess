@@ -19,6 +19,52 @@ grid::~grid()
 {
 }
 
+pieces (*grid::getTabGrid())[10]
+{
+    return this->tabGrid;
+}
+
+string grid::getTurn()
+{
+    return this->turn;
+}
+
+string grid::getPlayerOneCamp()
+{
+    return this->playerOneCamp;
+}
+
+string grid::getPlayerTwoCamp()
+{
+    return this->playerTwoCamp;
+}
+
+void grid::setTurn(string turn)
+{
+    this->turn = turn;
+}
+
+void grid::setPlayerOneCamp(string camp)
+{
+    this->playerOneCamp = camp;
+}
+
+void grid::setPlayerTwoCamp(string camp)
+{
+    this->playerTwoCamp = camp;
+}
+
+void grid::setTabGrid(pieces tab[10][10])
+{
+    for (int i = 0; i < 10; i++)
+    {
+        for (int y = 0; y < 10; y++)
+        {
+            this->tabGrid[i][y] = tab[i][y];
+        }
+    }
+}
+
 void grid::resetGrid()
 {
     SDL_Color color;

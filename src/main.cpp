@@ -11,6 +11,7 @@ using namespace std;
 #include "SDL2/SDL_video.h"
 #include <vector>
 #include "grid.cpp"
+#include "bot.cpp"
 
 int main()
 {
@@ -46,6 +47,7 @@ int main()
     int offsetX, offsetY, indiceDrag;
 
     SDL_Event e;
+    ChessBot bot;
 
     g.resetGrid();
 
@@ -60,6 +62,7 @@ int main()
         g.showGrid(rend);
 
         g.eventHolder(e, stop);
+        bot.playAsSecondPlayer(g);
 
         SDL_RenderPresent(rend);
         SDL_Delay(1000 / 60);
