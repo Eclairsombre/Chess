@@ -22,6 +22,7 @@ private:
         posRoiBlack = {};
 
     tuple<bool, vector<tuple<int, int>>> CoCastle;
+    vector<tuple<tuple<int, int>, tuple<int, int>>> posibleMoveRoiWhite, posibleMoveRoiBlack;
 
 public:
     grid(SDL_Renderer *rend);
@@ -31,13 +32,16 @@ public:
     void resetGrid();
     void eventHolder(SDL_Event e, bool &quit);
     tuple<bool, string> checkMate();
-    bool checkStopMate(pieces p, pieces tab[10][10], string camp, int a, int b, int x, int z);
+    vector<tuple<tuple<int, int>, tuple<int, int>>> checkStopMate(pieces p, pieces tab[10][10], string camp, int a, int b, int x, int z);
     void moveRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po);
     void posibleMove(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po);
-    bool checkCaseMate(const int x, const int z, pieces p, pieces tab[10][10], string camp, int &a, int &b);
+    bool checkCaseMate(const int x, const int z, pieces p, pieces tab[10][10], string camp, int &xOfPieceWhoCheck, int &yOfPieceWhoCheck);
     void checkEnd(bool &quit);
     tuple<bool, vector<tuple<int, int>>> canCastle(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po);
     void performMove();
+    void posibleMoveAttack(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po);
+    void attackPion(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po);
+    void attackRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po);
 };
 
 #endif

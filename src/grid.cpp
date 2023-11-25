@@ -3,7 +3,8 @@
 #include <vector>
 #include <iostream>
 using namespace std;
-#include "move.cpp"
+#include "movePieces.cpp"
+#include "attackPieces.cpp"
 #include "SDL2/SDL_image.h"
 
 grid::grid(SDL_Renderer *rend)
@@ -168,11 +169,13 @@ void grid::resetGrid()
 
 void grid::showGrid(SDL_Renderer *rend)
 {
+    int a, b;
     for (int i = 1; i <= 8; i++)
     {
         for (int y = 1; y <= 8; y++)
         {
             this->square = {100 + 100 * (i - 1), 100 + 100 * (y - 1), 100, 100};
+
             if (CoordonneinTuple(i - 1, y - 1, this->posibility))
             {
                 SDL_SetRenderDrawColor(rend, 255, 255, 0, 255);
@@ -230,6 +233,7 @@ void grid::eventHolder(SDL_Event e, bool &quit)
 
     while (SDL_PollEvent(&e))
     {
+        int a, b;
 
         if (e.type == SDL_QUIT)
         {
@@ -251,9 +255,63 @@ void grid::eventHolder(SDL_Event e, bool &quit)
 
                                 this->isDragging = true;
 
-                                indiceDragX = i;
-                                indiceDragY = y;
-                                this->posibleMove(i, y, this->tabGrid[i][y], this->tabGrid, this->posibility);
+                                this->indiceDragX = i;
+                                this->indiceDragY = y;
+
+                                this->posibleMove(this->indiceDragX, this->indiceDragY, this->tabGrid[i][y], this->tabGrid, this->posibility);
+
+                                if (checkCaseMate(get<0>(this->posRoiBlack), get<1>(this->posRoiBlack), tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)], tabGrid, tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)].getCamp(), a, b))
+                                {
+                                    vector<tuple<int, int>> v;
+
+                                    if (i == get<0>(this->posRoiBlack) && y == get<1>(this->posRoiBlack))
+                                    {
+                                        this->posibleMove(get<0>(this->posRoiBlack), get<1>(this->posRoiBlack), this->tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)], this->tabGrid, v);
+                                        this->posibility = v;
+                                        for (int z = 0; z < this->posibility.size(); z++)
+                                        {
+                                            if (checkCaseMate(get<0>(this->posibility[z]), get<1>(this->posibility[z]), this->tabGrid[get<0>(this->posibility[z])][get<1>(this->posibility[z])], this->tabGrid, this->tabGrid[get<0>(this->posibility[z])][get<1>(this->posibility[z])].getCamp(), a, b))
+                                            {
+                                                this->posibility.erase(this->posibility.begin() + z);
+                                            }
+                                        }
+                                    }
+
+                                    else
+                                    {
+                                        this->posibility = v;
+                                        this->posibleMoveRoiBlack = this->checkStopMate(this->tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)], this->tabGrid, this->tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)].getCamp(), a, b, get<0>(this->posRoiBlack), get<1>(this->posRoiBlack));
+                                        for (int z = 0; z < this->posibleMoveRoiBlack.size(); z++)
+                                        {
+                                            if (get<0>(this->posibleMoveRoiBlack[z]) == make_tuple(i, y))
+                                            {
+                                                this->posibility.push_back(get<1>(this->posibleMoveRoiBlack[z]));
+                                            }
+                                        }
+                                    }
+                                }
+                                else if (checkCaseMate(get<0>(this->posRoiWhite), get<1>(this->posRoiWhite), tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)], tabGrid, tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)].getCamp(), a, b))
+                                {
+                                    vector<tuple<int, int>> v;
+
+                                    if (i == get<0>(this->posRoiWhite) && y == get<1>(this->posRoiWhite))
+                                    {
+                                        this->posibleMove(get<0>(this->posRoiWhite), get<1>(this->posRoiWhite), this->tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)], this->tabGrid, v);
+                                        this->posibility = v;
+                                    }
+                                    else
+                                    {
+                                        this->posibleMoveRoiWhite = this->checkStopMate(this->tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)], this->tabGrid, this->tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)].getCamp(), a, b, get<0>(this->posRoiWhite), get<1>(this->posRoiWhite));
+                                        for (int z = 0; z < this->posibleMoveRoiWhite.size(); z++)
+                                        {
+                                            if (get<0>(this->posibleMoveRoiWhite[z]) == make_tuple(i, y))
+                                            {
+                                                this->posibility.push_back(get<1>(this->posibleMoveRoiWhite[z]));
+                                            }
+                                        }
+                                    }
+                                }
+
                                 if (this->tabGrid[this->indiceDragX][this->indiceDragY].getType() == 6)
                                 {
                                     this->CoCastle = this->canCastle(this->indiceDragX, this->indiceDragY, this->tabGrid[this->indiceDragX][this->indiceDragY], this->tabGrid, this->posibility);
@@ -263,6 +321,11 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                                 {
                                     cout << get<0>(posibility[i]) << " " << get<1>(posibility[i]) << endl;
                                 }
+                                cout << endl;
+                                cout << endl;
+                                cout << endl;
+                                cout << endl;
+
                                 this->offsetX = e.button.x - this->tabGrid[i][y].getPiece().x;
                                 this->offsetY = e.button.y - this->tabGrid[i][y].getPiece().y;
                             }
@@ -273,11 +336,156 @@ void grid::eventHolder(SDL_Event e, bool &quit)
         }
         else if (e.type == SDL_MOUSEBUTTONUP)
         {
+            SDL_Rect rect;
             if (e.button.button == SDL_BUTTON_LEFT && this->isDragging)
             {
+
+                if (this->tabGrid[this->indiceDragX][this->indiceDragY].getType() == 6)
+                {
+
+                    if (tabGrid[this->indiceDragX][this->indiceDragY].getCamp() == "black")
+                    {
+                        this->posRoiBlack = make_tuple(e.button.x / 100 - 1, e.button.y / 100 - 1);
+                    }
+                    else
+                    {
+                        this->posRoiWhite = make_tuple(e.button.x / 100 - 1, e.button.y / 100 - 1);
+                    }
+                }
+
                 this->isDragging = false;
 
-                this->performMove();
+                if (this->checkCaseMate(get<0>(this->posRoiWhite), get<1>(this->posRoiWhite), this->tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)], this->tabGrid, this->tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)].getCamp(), a, b))
+                {
+
+                    this->posibleMoveRoiWhite = this->checkStopMate(this->tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)], this->tabGrid, this->tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)].getCamp(), a, b, get<0>(this->posRoiWhite), get<1>(this->posRoiWhite));
+                    this->moveRoi(get<0>(this->posRoiWhite), get<1>(this->posRoiWhite), this->tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)], this->tabGrid, this->posibility);
+                    for (int i = 0; i < this->posibility.size(); i++)
+                    {
+                        if (CoordonneinTuple(e.button.x / 100 - 1, e.button.y / 100 - 1, this->posibility))
+                        {
+                            this->performMove();
+                            break;
+                        }
+                        else
+                        {
+
+                            rect = {120 + this->indiceDragX * 100, 120 + this->indiceDragY * 100, 60, 60};
+                            this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(rect);
+                        }
+                    }
+                    for (int i = 0; i < this->posibleMoveRoiWhite.size(); i++)
+                    {
+                        if (get<0>(this->posibleMoveRoiWhite[i]) == make_tuple(this->indiceDragX, this->indiceDragY) && get<1>(this->posibleMoveRoiWhite[i]) == make_tuple(e.button.x / 100 - 1, e.button.y / 100 - 1))
+                        {
+                            this->performMove();
+                            break;
+                        }
+                        else
+                        {
+
+                            rect = {120 + this->indiceDragX * 100, 120 + this->indiceDragY * 100, 60, 60};
+                            this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(rect);
+                        }
+                    }
+                }
+
+                else if (this->checkCaseMate(get<0>(this->posRoiBlack), get<1>(this->posRoiBlack), this->tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)], this->tabGrid, this->tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)].getCamp(), a, b))
+                {
+
+                    this->posibleMoveRoiBlack = this->checkStopMate(this->tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)], this->tabGrid, this->tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)].getCamp(), a, b, get<0>(this->posRoiBlack), get<1>(this->posRoiBlack));
+                    if (indiceDragX == get<0>(this->posRoiBlack) && indiceDragY == get<1>(this->posRoiBlack))
+                    {
+                        this->moveRoi(get<0>(this->posRoiBlack), get<1>(this->posRoiBlack), this->tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)], this->tabGrid, this->posibility);
+
+                        for (int i = 0; i < this->posibility.size(); i++)
+                        {
+                            if (CoordonneinTuple(e.button.x / 100 - 1, e.button.y / 100 - 1, this->posibility))
+                            {
+                                this->performMove();
+                                break;
+                            }
+                            else
+                            {
+
+                                rect = {120 + this->indiceDragX * 100, 120 + this->indiceDragY * 100, 60, 60};
+                                this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(rect);
+                            }
+                        }
+                    }
+
+                    for (int i = 0; i < this->posibleMoveRoiBlack.size(); i++)
+                    {
+                        if (get<0>(this->posibleMoveRoiBlack[i]) == make_tuple(this->indiceDragX, this->indiceDragY) && get<1>(this->posibleMoveRoiBlack[i]) == make_tuple(e.button.x / 100 - 1, e.button.y / 100 - 1))
+                        {
+                            this->performMove();
+                            break;
+                        }
+                        else
+                        {
+
+                            rect = {120 + this->indiceDragX * 100, 120 + this->indiceDragY * 100, 60, 60};
+                            this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(rect);
+                        }
+                    }
+                }
+
+                else
+                {
+
+                    if (tabGrid[this->indiceDragX][this->indiceDragY].getType() != 6)
+                    {
+                        this->tabGrid[this->indiceDragX][this->indiceDragY].setEmpty(true);
+                        if (this->tabGrid[this->indiceDragX][this->indiceDragY].getCamp() == "black")
+                        {
+                            if (!this->checkCaseMate(get<0>(this->posRoiBlack), get<1>(this->posRoiBlack), this->tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)], this->tabGrid, this->tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)].getCamp(), a, b))
+                            {
+
+                                this->tabGrid[this->indiceDragX][this->indiceDragY].setEmpty(false);
+
+                                this->performMove();
+                            }
+                            else
+                            {
+
+                                this->tabGrid[this->indiceDragX][this->indiceDragY].setEmpty(false);
+                                rect = {120 + this->indiceDragX * 100, 120 + this->indiceDragY * 100, 60, 60};
+                                this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(rect);
+                            }
+                        }
+                        else
+                        {
+                            if (!this->checkCaseMate(get<0>(this->posRoiWhite), get<1>(this->posRoiWhite), this->tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)], this->tabGrid, this->tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)].getCamp(), a, b))
+                            {
+
+                                this->tabGrid[this->indiceDragX][this->indiceDragY].setEmpty(false);
+
+                                this->performMove();
+                            }
+                            else
+                            {
+
+                                this->tabGrid[this->indiceDragX][this->indiceDragY].setEmpty(false);
+                                rect = {120 + this->indiceDragX * 100, 120 + this->indiceDragY * 100, 60, 60};
+                                this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(rect);
+                            }
+                        }
+                    }
+                    else if (tabGrid[this->indiceDragX][this->indiceDragY].getType() == 6)
+                    {
+                        if (!this->checkCaseMate((e.button.x / 100) - 1, (e.button.y / 100) - 1, this->tabGrid[(e.button.x / 100) - 1][(e.button.y / 100) - 1], this->tabGrid, this->tabGrid[this->indiceDragX][this->indiceDragY].getCamp(), a, b))
+                        {
+
+                            this->performMove();
+                        }
+                        else
+                        {
+
+                            rect = {120 + this->indiceDragX * 100, 120 + this->indiceDragY * 100, 60, 60};
+                            this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(rect);
+                        }
+                    }
+                }
             }
         }
         else if (e.type == SDL_MOUSEMOTION)
@@ -289,18 +497,5 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                 this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(temp);
             }
         }
-    }
-}
-
-void grid::checkEnd(bool &quit)
-{
-    vector<tuple<int, int>> temp;
-    this->check = temp;
-    this->moveRoi(get<0>(this->posRoiBlack), get<1>(this->posRoiBlack), this->tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)], this->tabGrid, this->check);
-    this->moveRoi(get<0>(this->posRoiWhite), get<1>(this->posRoiWhite), this->tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)], this->tabGrid, this->check);
-    if (this->checkmate)
-    {
-        cout << this->winner << endl;
-        quit = true;
     }
 }

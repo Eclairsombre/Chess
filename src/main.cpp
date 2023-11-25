@@ -10,13 +10,7 @@ using namespace std;
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_video.h"
 #include <vector>
-
 #include "grid.cpp"
-
-bool pointInRect(int x, int y, SDL_Rect rect)
-{
-    return x >= rect.x && x <= rect.x + rect.w && y >= rect.y && y <= rect.y + rect.h;
-}
 
 int main()
 {
