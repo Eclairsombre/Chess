@@ -262,15 +262,15 @@ void grid::eventHolder(SDL_Event e, bool &quit)
 
                                 if (checkCaseMate(get<0>(this->posRoiBlack), get<1>(this->posRoiBlack), tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)], tabGrid, tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)].getCamp(), a, b))
                                 {
-                                    vector<tuple<int, int>> v;
 
                                     if (i == get<0>(this->posRoiBlack) && y == get<1>(this->posRoiBlack))
                                     {
+                                        vector<tuple<int, int>> v;
                                         this->posibleMove(get<0>(this->posRoiBlack), get<1>(this->posRoiBlack), this->tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)], this->tabGrid, v);
                                         this->posibility = v;
                                         for (int z = 0; z < this->posibility.size(); z++)
                                         {
-                                            if (checkCaseMate(get<0>(this->posibility[z]), get<1>(this->posibility[z]), this->tabGrid[get<0>(this->posibility[z])][get<1>(this->posibility[z])], this->tabGrid, this->tabGrid[get<0>(this->posibility[z])][get<1>(this->posibility[z])].getCamp(), a, b))
+                                            if (checkCaseMate(get<0>(this->posibility[z]), get<1>(this->posibility[z]), this->tabGrid[get<0>(this->posibility[z])][get<1>(this->posibility[z])], this->tabGrid, "black", a, b))
                                             {
                                                 this->posibility.erase(this->posibility.begin() + z);
                                             }
@@ -279,6 +279,8 @@ void grid::eventHolder(SDL_Event e, bool &quit)
 
                                     else
                                     {
+
+                                        vector<tuple<int, int>> v;
                                         this->posibility = v;
                                         this->posibleMoveRoiBlack = this->checkStopMate(this->tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)], this->tabGrid, this->tabGrid[get<0>(this->posRoiBlack)][get<1>(this->posRoiBlack)].getCamp(), a, b, get<0>(this->posRoiBlack), get<1>(this->posRoiBlack));
                                         for (int z = 0; z < this->posibleMoveRoiBlack.size(); z++)
@@ -292,20 +294,33 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                                 }
                                 else if (checkCaseMate(get<0>(this->posRoiWhite), get<1>(this->posRoiWhite), tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)], tabGrid, tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)].getCamp(), a, b))
                                 {
-                                    vector<tuple<int, int>> v;
 
                                     if (i == get<0>(this->posRoiWhite) && y == get<1>(this->posRoiWhite))
                                     {
+
+                                        vector<tuple<int, int>> v;
                                         this->posibleMove(get<0>(this->posRoiWhite), get<1>(this->posRoiWhite), this->tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)], this->tabGrid, v);
                                         this->posibility = v;
+                                        for (int z = 0; z < this->posibility.size(); z++)
+                                        {
+                                            if (checkCaseMate(get<0>(this->posibility[z]), get<1>(this->posibility[z]), this->tabGrid[get<0>(this->posibility[z])][get<1>(this->posibility[z])], this->tabGrid, "white", a, b))
+                                            {
+                                                this->posibility.erase(this->posibility.begin() + z);
+                                            }
+                                        }
                                     }
                                     else
                                     {
+
+                                        vector<tuple<int, int>> v;
+                                        this->posibility = v;
                                         this->posibleMoveRoiWhite = this->checkStopMate(this->tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)], this->tabGrid, this->tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)].getCamp(), a, b, get<0>(this->posRoiWhite), get<1>(this->posRoiWhite));
                                         for (int z = 0; z < this->posibleMoveRoiWhite.size(); z++)
                                         {
+
                                             if (get<0>(this->posibleMoveRoiWhite[z]) == make_tuple(i, y))
                                             {
+
                                                 this->posibility.push_back(get<1>(this->posibleMoveRoiWhite[z]));
                                             }
                                         }
@@ -316,15 +331,6 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                                 {
                                     this->CoCastle = this->canCastle(this->indiceDragX, this->indiceDragY, this->tabGrid[this->indiceDragX][this->indiceDragY], this->tabGrid, this->posibility);
                                 }
-                                cout << "Move : " << endl;
-                                for (int i = 0; i < posibility.size(); i++)
-                                {
-                                    cout << get<0>(posibility[i]) << " " << get<1>(posibility[i]) << endl;
-                                }
-                                cout << endl;
-                                cout << endl;
-                                cout << endl;
-                                cout << endl;
 
                                 this->offsetX = e.button.x - this->tabGrid[i][y].getPiece().x;
                                 this->offsetY = e.button.y - this->tabGrid[i][y].getPiece().y;
@@ -359,7 +365,7 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                 {
 
                     this->posibleMoveRoiWhite = this->checkStopMate(this->tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)], this->tabGrid, this->tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)].getCamp(), a, b, get<0>(this->posRoiWhite), get<1>(this->posRoiWhite));
-                    this->moveRoi(get<0>(this->posRoiWhite), get<1>(this->posRoiWhite), this->tabGrid[get<0>(this->posRoiWhite)][get<1>(this->posRoiWhite)], this->tabGrid, this->posibility);
+
                     for (int i = 0; i < this->posibility.size(); i++)
                     {
                         if (CoordonneinTuple(e.button.x / 100 - 1, e.button.y / 100 - 1, this->posibility))
@@ -369,11 +375,12 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                         }
                         else
                         {
-                            cout << 1 << endl;
+
                             rect = {120 + this->indiceDragX * 100, 120 + this->indiceDragY * 100, 60, 60};
                             this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(rect);
                         }
                     }
+
                     for (int i = 0; i < this->posibleMoveRoiWhite.size(); i++)
                     {
                         if (get<0>(this->posibleMoveRoiWhite[i]) == make_tuple(this->indiceDragX, this->indiceDragY) && get<1>(this->posibleMoveRoiWhite[i]) == make_tuple(e.button.x / 100 - 1, e.button.y / 100 - 1))
@@ -383,7 +390,7 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                         }
                         else
                         {
-                            cout << 2 << endl;
+
                             rect = {120 + this->indiceDragX * 100, 120 + this->indiceDragY * 100, 60, 60};
                             this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(rect);
                         }
@@ -404,7 +411,7 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                         }
                         else
                         {
-                            cout << 3 << endl;
+
                             rect = {120 + this->indiceDragX * 100, 120 + this->indiceDragY * 100, 60, 60};
                             this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(rect);
                         }
@@ -419,7 +426,7 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                         }
                         else
                         {
-                            cout << 4 << endl;
+
                             rect = {120 + this->indiceDragX * 100, 120 + this->indiceDragY * 100, 60, 60};
                             this->tabGrid[this->indiceDragX][this->indiceDragY].setPieces(rect);
                         }

@@ -34,7 +34,7 @@ vector<tuple<tuple<int, int>, tuple<int, int>>> grid::checkStopMate(pieces p, pi
     {
         for (int j = 0; j < 8; j++)
         {
-            // Check if the piece belongs to the same camp and is not the piece causing the check
+            // Check if the piece belongs to the same camp and is not the king
             if (tab[i][j].getCamp() == camp && (i != xKingCheck || j != yKingCheck))
             {
                 vector<tuple<int, int>> pieceMoves;

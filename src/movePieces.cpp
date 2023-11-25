@@ -39,21 +39,19 @@ void movePion(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
                 if (!tab[x - 1][y - 1].getEmpty())
                 {
 
+                    if (tab[x][y].getCamp() == (string) "black")
                     {
-                        if (tab[x][y].getCamp() == (string) "black")
-                        {
 
-                            if (tab[x - 1][y - 1].getCamp() == (string) "white")
-                            {
-                                po.push_back(make_tuple(x - 1, y - 1));
-                            }
-                        }
-                        else
+                        if (tab[x - 1][y - 1].getCamp() == (string) "white")
                         {
-                            if (tab[x - 1][y - 1].getCamp() == (string) "black")
-                            {
-                                po.push_back(make_tuple(x - 1, y - 1));
-                            }
+                            po.push_back(make_tuple(x - 1, y - 1));
+                        }
+                    }
+                    else
+                    {
+                        if (tab[x - 1][y - 1].getCamp() == (string) "black")
+                        {
+                            po.push_back(make_tuple(x - 1, y - 1));
                         }
                     }
                 }
@@ -65,20 +63,19 @@ void movePion(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
             {
                 if (!tab[x + 1][y - 1].getEmpty())
                 {
+
+                    if (tab[x][y].getCamp() == (string) "black")
                     {
-                        if (tab[x][y].getCamp() == (string) "black")
+                        if (tab[x + 1][y - 1].getCamp() == (string) "white")
                         {
-                            if (tab[x + 1][y - 1].getCamp() == (string) "white")
-                            {
-                                po.push_back(make_tuple(x + 1, y - 1));
-                            }
+                            po.push_back(make_tuple(x + 1, y - 1));
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (tab[x + 1][y - 1].getCamp() == (string) "black")
                         {
-                            if (tab[x + 1][y - 1].getCamp() == (string) "black")
-                            {
-                                po.push_back(make_tuple(x + 1, y - 1));
-                            }
+                            po.push_back(make_tuple(x + 1, y - 1));
                         }
                     }
                 }
@@ -116,18 +113,21 @@ void movePion(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>
             {
                 if (!tab[x - 1][y + 1].getEmpty())
                 {
+
                     if (tab[x][y].getCamp() == (string) "black")
                     {
                         if (tab[x - 1][y + 1].getCamp() == (string) "white")
                         {
+
                             po.push_back(make_tuple(x - 1, y + 1));
                         }
                     }
                     else
                     {
-                        if (tab[x + 1][y + 1].getCamp() == (string) "black")
+                        if (tab[x - 1][y + 1].getCamp() == (string) "black")
                         {
-                            po.push_back(make_tuple(x + 1, y + 1));
+
+                            po.push_back(make_tuple(x - 1, y + 1));
                         }
                     }
                 }
