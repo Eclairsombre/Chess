@@ -41,6 +41,7 @@ public:
     void posibleMoveAttack(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po);
     void attackPion(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po);
     void attackRoi(int x, int y, pieces p, pieces tab[10][10], vector<tuple<int, int>> &po);
+    void changePion(int x, int y);
 };
 
 #endif

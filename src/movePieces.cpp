@@ -1319,6 +1319,51 @@ void grid::performMove()
             this->tabGrid[this->indiceDragX][this->indiceDragY].ClipChanger(vide);
             vector<tuple<int, int>> f;
             this->posibility = f;
+
+            if (this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].getType() == 1 && (rect.y / 100) - 1 == 0)
+            {
+                SDL_Rect clip;
+                this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setType(5);
+                if (this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].getCamp() == "black")
+                {
+
+                    clip.h = 177;
+                    clip.w = 170;
+                    clip.x = 212;
+                    clip.y = 216;
+                }
+
+                else
+                {
+                    clip.h = 177;
+                    clip.w = 170;
+                    clip.x = 212;
+                    clip.y = 16;
+                }
+                this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].ClipChanger(clip);
+            }
+            else if (this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].getType() == 1 && (rect.y / 100) - 1 == 7)
+            {
+                SDL_Rect clip;
+                this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].setType(5);
+                if (this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].getCamp() == "black")
+                {
+
+                    clip.h = 177;
+                    clip.w = 170;
+                    clip.x = 212;
+                    clip.y = 216;
+                }
+
+                else
+                {
+                    clip.h = 177;
+                    clip.w = 170;
+                    clip.x = 212;
+                    clip.y = 16;
+                }
+                this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].ClipChanger(clip);
+            }
         }
     }
     else
