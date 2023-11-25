@@ -90,7 +90,7 @@ bool grid::checkCaseMate(const int x, const int z, pieces p, pieces tab[10][10],
             {
                 if (camp == "white")
                 {
-                    if (tab[i][y].getCamp() == "black" && tab[i][y].getType() != 6)
+                    if (tab[i][y].getCamp() == "black")
                     {
                         vector<tuple<int, int>> temp;
 
@@ -108,7 +108,7 @@ bool grid::checkCaseMate(const int x, const int z, pieces p, pieces tab[10][10],
                 }
                 else
                 {
-                    if (tab[i][y].getCamp() == "white" && tab[i][y].getType() != 6)
+                    if (tab[i][y].getCamp() == "white")
                     {
                         vector<tuple<int, int>> temp;
 

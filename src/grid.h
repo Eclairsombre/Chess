@@ -27,7 +27,6 @@ private:
 public:
     grid(SDL_Renderer *rend);
     ~grid();
-
     void showGrid(SDL_Renderer *rend);
     void resetGrid();
     void eventHolder(SDL_Event e, bool &quit);

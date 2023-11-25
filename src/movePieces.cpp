@@ -1353,7 +1353,7 @@ void grid::posibleMoveAttack(int x, int y, pieces p, pieces tab[10][10], vector<
         moveDame(x, y, p, tab, po);
         break;
     case 6:
-        moveRoi(x, y, p, tab, po);
+        this->attackRoi(x, y, p, tab, po);
         break;
 
     default:

@@ -29,7 +29,9 @@ int main()
 
     SDL_Window *win = SDL_CreateWindow("CHESS", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1000, 1000, 0);
     Uint32 render_flags = SDL_RENDERER_ACCELERATED;
+
     SDL_Renderer *rend = SDL_CreateRenderer(win, -1, render_flags);
+    SDL_SetRenderDrawBlendMode(rend, SDL_BLENDMODE_BLEND);
 
     bool stop = false;
 

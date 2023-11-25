@@ -40,13 +40,13 @@ void grid::resetGrid()
                         color = {255, 255, 255};
                         this->tabGrid[i][y].setColor(color);
                         this->tabGrid[i][y].setCamp("white");
-                        playerTwoCamp = "white";
+                        this->playerTwoCamp = "white";
                         break;
                     case 1:
                         color = {0, 0, 0};
                         this->tabGrid[i][y].setColor(color);
                         this->tabGrid[i][y].setCamp("black");
-                        playerTwoCamp = "black";
+                        this->playerTwoCamp = "black";
                     default:
                         break;
                     }
@@ -60,13 +60,13 @@ void grid::resetGrid()
                         color = {255, 255, 255};
                         this->tabGrid[i][y].setColor(color);
                         this->tabGrid[i][y].setCamp("white");
-                        playerOneCamp = "white";
+                        this->playerOneCamp = "white";
                         break;
                     case 0:
                         color = {0, 0, 0};
                         this->tabGrid[i][y].setColor(color);
                         this->tabGrid[i][y].setCamp("black");
-                        playerOneCamp = "black";
+                        this->playerOneCamp = "black";
                     default:
                         break;
                     }
@@ -176,36 +176,36 @@ void grid::showGrid(SDL_Renderer *rend)
         {
             this->square = {100 + 100 * (i - 1), 100 + 100 * (y - 1), 100, 100};
 
-            if (CoordonneinTuple(i - 1, y - 1, this->posibility))
+            if (i % 2 != 0)
             {
-                SDL_SetRenderDrawColor(rend, 255, 255, 0, 255);
+                if (y % 2 == 0)
+                {
+                    SDL_SetRenderDrawColor(rend, 0, 150, 0, 255);
+                }
+                else if (y % 2 != 0)
+                {
+                    SDL_SetRenderDrawColor(rend, 232, 220, 202, 255);
+                }
             }
             else
             {
-                if (i % 2 != 0)
+                if (y % 2 != 0)
                 {
-                    if (y % 2 == 0)
-                    {
-                        SDL_SetRenderDrawColor(rend, 0, 150, 0, 255);
-                    }
-                    else if (y % 2 != 0)
-                    {
-                        SDL_SetRenderDrawColor(rend, 232, 220, 202, 255);
-                    }
+                    SDL_SetRenderDrawColor(rend, 0, 150, 0, 255);
                 }
-                else
+                else if (y % 2 == 0)
                 {
-                    if (y % 2 != 0)
-                    {
-                        SDL_SetRenderDrawColor(rend, 0, 150, 0, 255);
-                    }
-                    else if (y % 2 == 0)
-                    {
-                        SDL_SetRenderDrawColor(rend, 232, 220, 202, 255);
-                    }
+                    SDL_SetRenderDrawColor(rend, 232, 220, 202, 255);
                 }
             }
             SDL_RenderFillRect(rend, &this->square);
+
+            if (CoordonneinTuple(i - 1, y - 1, this->posibility))
+            {
+
+                SDL_SetRenderDrawColor(rend, 255, 255, 0, 200);
+                SDL_RenderFillRect(rend, &this->square);
+            }
         }
     }
 
@@ -343,7 +343,7 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                 if (this->tabGrid[this->indiceDragX][this->indiceDragY].getType() == 6)
                 {
 
-                    if (tabGrid[this->indiceDragX][this->indiceDragY].getCamp() == "black")
+                    if (this->tabGrid[this->indiceDragX][this->indiceDragY].getCamp() == "black")
                     {
                         this->posRoiBlack = make_tuple(e.button.x / 100 - 1, e.button.y / 100 - 1);
                     }
@@ -429,7 +429,7 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                 else
                 {
 
-                    if (tabGrid[this->indiceDragX][this->indiceDragY].getType() != 6)
+                    if (this->tabGrid[this->indiceDragX][this->indiceDragY].getType() != 6)
                     {
                         this->tabGrid[this->indiceDragX][this->indiceDragY].setEmpty(true);
                         if (this->tabGrid[this->indiceDragX][this->indiceDragY].getCamp() == "black")
@@ -467,7 +467,7 @@ void grid::eventHolder(SDL_Event e, bool &quit)
                             }
                         }
                     }
-                    else if (tabGrid[this->indiceDragX][this->indiceDragY].getType() == 6)
+                    else if (this->tabGrid[this->indiceDragX][this->indiceDragY].getType() == 6)
                     {
                         if (!this->checkCaseMate((e.button.x / 100) - 1, (e.button.y / 100) - 1, this->tabGrid[(e.button.x / 100) - 1][(e.button.y / 100) - 1], this->tabGrid, this->tabGrid[this->indiceDragX][this->indiceDragY].getCamp(), a, b))
                         {
