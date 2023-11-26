@@ -65,6 +65,11 @@ void grid::setTabGrid(pieces tab[10][10])
     }
 }
 
+void grid::setCheckMate(bool b)
+{
+    this->checkmate = b;
+}
+
 void grid::resetGrid()
 {
     SDL_Color color;

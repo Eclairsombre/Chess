@@ -48,7 +48,7 @@ int main()
 
     SDL_Event e;
     ChessBot bot;
-
+    int delay = 60;
     g.resetGrid();
 
     while (!stop)
@@ -62,7 +62,15 @@ int main()
         g.showGrid(rend);
 
         g.eventHolder(e, stop);
-        bot.playAsSecondPlayer(g);
+        if (g.getTurn() == g.getPlayerTwoCamp() && delay == 0)
+        {
+            bot.playAsSecondPlayer(g);
+            delay = 60;
+        }
+        else if (g.getTurn() == g.getPlayerTwoCamp() && delay > 0)
+        {
+            delay--;
+        }
 
         SDL_RenderPresent(rend);
         SDL_Delay(1000 / 60);

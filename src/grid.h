@@ -55,6 +55,7 @@ public:
     void setTurn(string s);
     void setPlayerOneCamp(string s);
     void setPlayerTwoCamp(string s);
+    void setCheckMate(bool b);
 };
 
 #endif

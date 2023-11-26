@@ -1188,14 +1188,6 @@ void grid::performMove()
 
     if (CoordonneinTuple(rect.x / 100 - 1, rect.y / 100 - 1, this->posibility))
     {
-        if (this->turn == "black")
-        {
-            this->turn = "white";
-        }
-        else
-        {
-            this->turn = "black";
-        }
 
         if (this->tabGrid[this->indiceDragX][this->indiceDragY].getType() == 6)
         {
@@ -1364,6 +1356,14 @@ void grid::performMove()
                 }
                 this->tabGrid[(rect.x / 100) - 1][(rect.y / 100) - 1].ClipChanger(clip);
             }
+        }
+        if (this->turn == "black")
+        {
+            this->turn = "white";
+        }
+        else
+        {
+            this->turn = "black";
         }
     }
     else

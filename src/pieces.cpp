@@ -2,6 +2,11 @@
 
 pieces::pieces(/* args */)
 {
+    this->asMove = false;
+    this->empty = true;
+    this->typePiece = 0;
+    this->direction = "none";
+    this->camp = "none";
 }
 
 pieces::~pieces()
@@ -193,4 +198,29 @@ void pieces::set_clips()
     default:
         break;
     }
+}
+
+void pieces::operator=(pieces p)
+{
+    this->rect = p.getPiece();
+    this->clip = p.getClip();
+    this->color = p.getColor();
+    this->empty = p.getEmpty();
+    this->typePiece = p.getType();
+    this->direction = p.getDirection();
+    this->asMove = p.getMove();
+    this->camp = p.getCamp();
+}
+
+ostream &operator<<(ostream &out, pieces p)
+{
+    out << "rect: " << p.getPiece().x << " " << p.getPiece().y << " " << p.getPiece().w << " " << p.getPiece().h << endl;
+    out << "clip: " << p.getClip().x << " " << p.getClip().y << " " << p.getClip().w << " " << p.getClip().h << endl;
+    out << "color: " << p.getColor().r << " " << p.getColor().g << " " << p.getColor().b << " " << p.getColor().a << endl;
+    out << "empty: " << p.getEmpty() << endl;
+    out << "typePiece: " << p.getType() << endl;
+    out << "direction: " << p.getDirection() << endl;
+    out << "asMove: " << p.getMove() << endl;
+    out << "camp: " << p.getCamp() << endl;
+    return out;
 }
