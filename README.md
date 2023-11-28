@@ -28,7 +28,7 @@ A Chess Game made in C++ with a IA (It's still in dev so it's random at this tim
 3. To play the game, type on your terminal : ```./bin/main```  
   
 
-## III) Mode presentation
+## III) Presentation
 
 ![image](https://github.com/Eclairsombre/Chess/assets/130174141/b1cf4dfc-ba4b-471a-a030-55b2f4d26589)
 
