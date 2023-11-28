@@ -224,3 +224,103 @@ ostream &operator<<(ostream &out, pieces p)
     out << "camp: " << p.getCamp() << endl;
     return out;
 }
+
+int pieces::getValue()
+{
+    switch (this->typePiece)
+    {
+    case 1:
+        return 1;
+        break;
+    case 2:
+        return 5;
+        break;
+    case 3:
+        return 3;
+        break;
+    case 4:
+        return 3;
+        break;
+    case 5:
+        return 9;
+        break;
+    case 6:
+        return 1000;
+        break;
+    default:
+        return 0;
+        break;
+    }
+}
+
+int pieces::getValuePosition(int x, int y)
+{
+    int value = 0;
+    switch (this->typePiece)
+    {
+    case 1:
+        if (this->camp == "white")
+        {
+            value = 10 + (y * 10);
+        }
+        else
+        {
+            value = 10 + ((7 - y) * 10);
+        }
+        break;
+    case 2:
+        if (this->camp == "white")
+        {
+            value = 50 + (y * 10);
+        }
+        else
+        {
+            value = 50 + ((7 - y) * 10);
+        }
+        break;
+    case 3:
+        if (this->camp == "white")
+        {
+            value = 30 + (y * 10);
+        }
+        else
+        {
+            value = 30 + ((7 - y) * 10);
+        }
+        break;
+    case 4:
+        if (this->camp == "white")
+        {
+            value = 30 + (y * 10);
+        }
+        else
+        {
+            value = 30 + ((7 - y) * 10);
+        }
+        break;
+    case 5:
+        if (this->camp == "white")
+        {
+            value = 90 + (y * 10);
+        }
+        else
+        {
+            value = 90 + ((7 - y) * 10);
+        }
+        break;
+    case 6:
+        if (this->camp == "white")
+        {
+            value = 900 + (y * 10);
+        }
+        else
+        {
+            value = 900 + ((7 - y) * 10);
+        }
+        break;
+
+    default:
+        break;
+    }
+    return value;
+}

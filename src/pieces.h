@@ -45,6 +45,9 @@ public:
     SDL_Rect getClip();
     void ClipChanger(SDL_Rect r);
 
+    int getValue();
+    int getValuePosition(int x, int y);
+
     void operator=(pieces p);
     friend ostream &operator<<(ostream &out, pieces p);
 };

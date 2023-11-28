@@ -25,10 +25,7 @@ public:
     void checkAllPossibleMoves(grid &g, pieces tabGrid[10][10]);
     void makeMove(pieces tabGrid[10][10], tuple<int, int> move, tuple<int, int> destination);
 
-    tuple<int, tuple<tuple<int, int>, tuple<int, int>>> BestMoveToPlay(grid &g);
-    /*Return the best move to play in allPossibleMoves*/
-
-    int evaluatePosition(grid &g);
+    // int evaluatePosition(grid &g, pieces tabGrid[10][10]);
 };
 
 #endif
