@@ -30,5 +30,5 @@ A Chess Game made in C++ with a IA (It's still in dev so it's random at this tim
 
 ## III) Mode presentation
 
-![image](https://github.com/Eclairsombre/Chess/assets/130174141/dfeb1c00-9608-4a5a-8a91-d69c4f2dbf6e)
+![image](https://github.com/Eclairsombre/Chess/assets/130174141/b1cf4dfc-ba4b-471a-a030-55b2f4d26589)
 
